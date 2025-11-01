@@ -1,0 +1,16 @@
+<div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed' : ''">
+
+  <div class="sidenav-container">
+    <button class="name" (click)="toggleCollapse()">FJ</button>
+    <div *ngIf="!collapsed" class="full-name">Felipe Joven</div>
+  </div>
+
+  <ul class="sidenav-nav">
+    <li *ngFor="let item of menuItems" class="sidenav-nav-item">
+      <a [routerLink]="item.routerLink" routerLinkActive="active" (click)="toggleCollapse(true)">
+        <i *ngIf="item.icon" class="{{ item.icon }}"></i>
+        <span *ngIf="!collapsed">{{ item.label }}</span>
+      </a>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,10 @@
+button {
+  background-color: #779cec;
+  font-size: 1rem;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+button:hover {
+  background-color: #1e40af;
+}

@@ -1,0 +1,33 @@
+.fixed-navbar {
+  height: 50px;          
+  display: flex;
+  align-items: center;   
+  justify-content: space-between; 
+}
+
+.login-logo {
+  height: 50px;  
+  width: auto;
+  object-fit: contain;
+}
+
+.logo-text {  
+  font-weight: bold;
+  font-size: 1.8rem;  
+  background: linear-gradient(90deg, #2d44f3, #1c7cac);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+span {  
+  font-weight: bold;
+  font-size: 1.2rem;  
+  background: linear-gradient(90deg, #2d44f3, #1c7cac);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+

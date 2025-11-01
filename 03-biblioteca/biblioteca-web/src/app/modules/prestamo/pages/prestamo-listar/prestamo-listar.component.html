@@ -1,0 +1,90 @@
+<div class="container mt-4">
+    <h1 class="mb-4 text-center">Lista de Prestamos</h1>
+
+    <div class="d-flex align-items-center justify-content-between mb-3">
+
+        <div class="d-flex justify-content-between" style="min-width: 180px; margin-left: 150px;">
+            <app-btn-agregar (click)="openModal()"></app-btn-agregar>
+        </div>
+
+        <div *ngIf="!isLoading || prestamos.length !== 0"
+            class="d-flex flex-wrap align-items-center justify-content-center gap-2 flex-grow-1">
+
+            <div class="flex-grow-1" style="min-width: 250px; max-width: 350px; margin-right: 20px;">
+                <app-filtro-busqueda [searchControl]="searchControl" (clear)="clearSearch()"
+                    placeholder="Buscar prestamo...">
+                </app-filtro-busqueda>
+            </div>
+
+            <div>
+                <app-btn-limpiar (click)="clearSearch()"></app-btn-limpiar>
+            </div>
+
+            <div *ngIf="!errorMessage" class="d-flex justify-content-end" style="min-width: 180px;">
+                <app-filtro-orden [data]="prestamos" textField="titulo" dateField="fechaCreacion"
+                    (sortedData)="prestamos = $event">
+                </app-filtro-orden>
+            </div>
+
+        </div>
+    </div>
+
+    <div *ngIf="!isLoading && prestamos.length === 0 && !errorMessage" class="alert alert-info text-center mx-auto mt-3"
+        style="width: 50%;"> No existen prestamos registrados
+    </div>
+
+    <div class="table-container">
+        <ng-container *ngIf="!isLoading && prestamos.length > 0 && !errorMessage; else errorBlock">
+            <table>
+
+                <thead>
+                    <tr *ngIf="prestamosPaginados">
+                        <th>Fecha de préstamo</th>
+                        <th>Fecha de devolución</th>
+                        <th>Devuelto</th>
+                        <th>Libro</th>
+                        <th>Miembro</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr *ngFor="let prestamo of prestamosPaginados">
+                        <td>{{ prestamo.fechaPrestamo }}</td>
+                        <td>{{ prestamo.fechaDevolucion }}</td>
+                        <td>{{ prestamo.libro }}</td>
+                        <td>{{ prestamo.miembro }}</td>
+                        <td>
+                            <span class="badge" [ngClass]="prestamo.devuelto ? 'bg-success' : 'bg-danger'">
+                                {{ prestamo.devuelto ? 'Disponible' : 'Ocupado' }}
+                            </span>
+                        </td>
+                        <td>
+                            <app-btn-editar (clickEvent)="openModal(prestamo)"></app-btn-editar>
+                            <app-btn-eliminar (clickEvent)="deleteBooks(prestamo.id)"></app-btn-eliminar>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </ng-container>
+
+        <ng-template #errorBlock>
+            <div *ngIf="!isLoading && errorMessage" class="alert alert-danger text-center mx-auto mt-2"
+                style="width: 50%;">
+                {{ errorMessage }}
+            </div>
+        </ng-template>
+    </div>
+
+    <app-paginador [data]="prestamos" (paginatedDataChange)="onPageChange($event)"></app-paginador>
+</div>
+
+<app-modal *ngIf="showModal" [show]="showModal" [title]="prestamoSeleccionado ? 'Editar prestamo' : 'Agregar prestamo'"
+    (closed)="closeModal()">
+
+    <app-prestamo-form [prestamo]="prestamoSeleccionado" (guardado)="onSave()" (cancelar)="closeModal()">
+    </app-prestamo-form>
+
+</app-modal>
