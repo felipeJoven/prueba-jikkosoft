@@ -39,9 +39,12 @@
 
                 <thead>
                     <tr *ngIf="bibliotecasPaginadas">
-                        <th>Nombre de la biblioteca</th>
+                        <th>Nombre</th>
                         <th>Dirección</th>
+                        <th>Barrio</th>
+                        <th>Teléfono</th>
                         <th>Fecha de creación</th>
+                        <th>Fecha de actualización</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -51,10 +54,13 @@
                     <tr *ngFor="let biblioteca of bibliotecasPaginadas">
                         <td>{{ biblioteca.nombre }}</td>
                         <td>{{ biblioteca.direccion }}</td>
+                        <td>{{ biblioteca.barrio }}</td>
+                        <td>{{ biblioteca.telefono }}</td>
                         <td>{{ biblioteca.fechaCreacion }}</td>                        
+                        <td>{{ biblioteca.fechaActualizacion }}</td>                        
                         <td>
                             <app-btn-editar (clickEvent)="openModal(biblioteca)"></app-btn-editar>
-                            <app-btn-eliminar (clickEvent)="deleteBooks(biblioteca.id)"></app-btn-eliminar>
+                            <app-btn-eliminar (clickEvent)="deleteLibraries(biblioteca.id)"></app-btn-eliminar>
                         </td>
                     </tr>
 
@@ -73,10 +79,13 @@
     <app-paginador [data]="bibliotecas" (paginatedDataChange)="onPageChange($event)"></app-paginador>
 </div>
 
-<app-modal *ngIf="showModal" [show]="showModal" [title]="bibliotecaSeleccionada ? 'Editar biblioteca' : 'Agregar biblioteca'"
+<app-form-modal *ngIf="showModal" [show]="showModal" [title]="!bibliotecaSeleccionada ? 'Agregar biblioteca' : 'Editar biblioteca' "
     (closed)="closeModal()">
 
-    <app-biblioteca-form [biblioteca]="bibliotecaSeleccionada" (guardado)="onSave()" (cancelar)="closeModal()">
-    </app-biblioteca-form>
+    <app-biblioteca-form [biblioteca]="bibliotecaSeleccionada" (guardado)="onSave()" (cancelar)="closeModal()"></app-biblioteca-form>
 
-</app-modal>
+</app-form-modal>
+
+<app-confirm-modal *ngIf="showConfirm" [title]="'Eliminar biblioteca'" [message]="'¿Está seguro que desea eliminar esta biblioteca?'"
+    (confirmed)="onConfirmDelete(true)" (cancelled)="onConfirmDelete(false)">
+</app-confirm-modal>

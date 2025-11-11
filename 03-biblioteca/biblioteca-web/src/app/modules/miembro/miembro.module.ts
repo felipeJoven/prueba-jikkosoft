@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { SharedModule } from '../../shared/shared.module';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { MiembroRoutingModule } from './miembro-routing.module';
 import { MiembroListarComponent } from './pages/miembro-listar/miembro-listar.component';
@@ -16,7 +16,7 @@ import { MiembroFormComponent } from './pages/miembro-form/miembro-form.componen
   ],
   imports: [
     CommonModule,
-    FormsModule,
+    ReactiveFormsModule,
     SharedModule,
     MiembroRoutingModule
   ]

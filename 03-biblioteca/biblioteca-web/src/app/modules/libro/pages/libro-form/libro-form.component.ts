@@ -3,8 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Libro } from '../../model/libro.model';
 import { LibroService } from '../../services/libro.service';
-import { Categoria } from '../../../categoria/model/categoria.model';
-import { CategoriaService } from '../../../categoria/service/categoria.service';
+import { Autor } from '../../../autor/model/autor.model';
+import { AutorService } from '../../../autor/services/autor.service';
 
 @Component({
   selector: 'app-libro-form',
@@ -18,22 +18,22 @@ export class LibroFormComponent implements OnInit, OnChanges {
   @Output() cancelar = new EventEmitter<void>();
 
   libroForm: FormGroup;
-  categoria: Categoria[] = [];
+  autores: Autor[] = [];
 
   constructor(
     private fb: FormBuilder,
     private libroService: LibroService,
-    private categoriaService: CategoriaService
+    private autorService: AutorService
   ) {
     this.libroForm = this.fb.group({
       titulo: ['', Validators.required],     
-    isbn: ['', Validators.required],
-    categoriaId: [0, Validators.required],
+      isbn: ['', Validators.required],
+      autorId: [null, Validators.required],
     });
   }
 
   ngOnInit(): void {
-    this.loadCategories();
+    this.loadAuthors();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -44,14 +44,13 @@ export class LibroFormComponent implements OnInit, OnChanges {
     }
   }
 
-  private loadCategories(): void {
-    this.categoriaService.obtenerCategorias().subscribe({
+  private loadAuthors(): void {
+    this.autorService.obtenerAutores().subscribe({
       next: (data) => {
         console.log("Respuesta del backend:", data);
-        this.categoria = data
+        this.autores = data
       },
       error: (e) => console.log("Error cargando tipos de libro: ", e)
-
     });
   }
 

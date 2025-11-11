@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { ModalComponent } from './ui/modal/modal.component';
 import { BtnAgregarComponent } from './ui/buttons/btn-agregar/btn-agregar.component';
 import { BtnEditarComponent } from './ui/buttons/btn-editar/btn-editar.component';
 import { BtnEliminarComponent } from './ui/buttons/btn-eliminar/btn-eliminar.component';
@@ -10,11 +9,14 @@ import { FiltroBusquedaComponent } from './ui/filters/filtro-busqueda/filtro-bus
 import { FiltroOrdenComponent } from './ui/filters/filtro-orden/filtro-orden.component';
 import { BtnLimpiarComponent } from './ui/buttons/btn-limpiar/btn-limpiar.component';
 import { PaginadorComponent } from './ui/paginator/paginador.component';
+import { FormModalComponent } from './ui/modal/form-modal/form-modal.component';
+import { ConfirmModalComponent } from './ui/modal/confirm-modal/confirm-modal.component';
 
 
 @NgModule({
   declarations: [
-    ModalComponent,
+    FormModalComponent,
+    ConfirmModalComponent,
     BtnAgregarComponent,
     BtnEditarComponent,
     BtnEliminarComponent,
@@ -28,7 +30,8 @@ import { PaginadorComponent } from './ui/paginator/paginador.component';
     ReactiveFormsModule,
    ],
   exports: [
-    ModalComponent,
+    FormModalComponent,
+    ConfirmModalComponent,
     BtnAgregarComponent,
     BtnEditarComponent,
     BtnEliminarComponent,

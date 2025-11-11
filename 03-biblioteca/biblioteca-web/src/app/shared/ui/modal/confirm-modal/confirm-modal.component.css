@@ -1,0 +1,8 @@
+.modal-header, .btn-confirm {
+  background: linear-gradient(135deg, #3868c2, #366bc6); 
+  color: #ffffff;
+}
+
+.btn-confirm:hover {
+  background: linear-gradient(90deg, #721e1e, #982a2a);
+}

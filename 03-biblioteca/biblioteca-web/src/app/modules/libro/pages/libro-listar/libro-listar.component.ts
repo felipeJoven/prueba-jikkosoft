@@ -14,10 +14,12 @@ export class LibroListarComponent implements OnInit {
   libros: Libro[] = [];
   librosPaginados: any[] = [];
   libroSeleccionado: Libro | null = null;
+  libroEliminar: number | null = null;
 
+  errorMessage = '';
   isLoading = true;
   showModal = false;
-  errorMessage = '';
+  showConfirm = false;
   
   searchControl = new FormControl('');
 
@@ -43,7 +45,6 @@ export class LibroListarComponent implements OnInit {
         this.isLoading = false;
       }
     });
-
   }
 
   onPageChange(data: any[]) {
@@ -71,9 +72,20 @@ export class LibroListarComponent implements OnInit {
   }
 
   deleteBooks(id: number): void {
-    this.libroService.eliminarLibro(id).subscribe({
-      next: () => this.loadBooks(),
-      error: (error) => console.log('Error eliminando la libro ', error)
-    });
+    this.libroEliminar = id;
+    this.showConfirm = true;
+  }
+
+  onConfirmDelete(confirmed: boolean): void {
+    this.showConfirm = false;
+    if (confirmed && this.libroEliminar !== null) {
+      this.libroService.eliminarLibro(this.libroEliminar).subscribe({
+        next: () => this.loadBooks(),
+        error: (error) => console.log('Error eliminando el libro: ', error),
+        complete: () => (this.libroEliminar = null)
+      });
+    } else {
+      this.libroEliminar = null;
+    }
   }
 }

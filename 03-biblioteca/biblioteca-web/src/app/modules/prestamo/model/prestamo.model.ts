@@ -5,8 +5,8 @@ export interface Prestamo {
     fechaPrestamo: Date;
     fechaDevolucion: Date;
     devuelto: boolean;     
-    libro: string;
     libroId: number;
-    miembro: string;
+    libro: string;
     miembroId: number;
+    miembro: string;
 }

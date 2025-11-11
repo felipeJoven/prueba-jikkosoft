@@ -39,9 +39,12 @@
 
                 <thead>
                     <tr *ngIf="librosPaginados">
-                        <th>Nombre del libro</th>
+                        <th>Nombre</th>
+                        <th>Autor</th>
                         <th>Registro ISBN</th>
                         <th>Disponibilidad</th>
+                        <th>Fecha de creación</th>
+                        <th>Fecha de actualización</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -50,12 +53,15 @@
 
                     <tr *ngFor="let libro of librosPaginados">
                         <td>{{ libro.titulo }}</td>
+                        <td>{{ libro.nombreAutor }}</td>
                         <td>{{ libro.isbn }}</td>
                         <td>
                             <span class="badge" [ngClass]="libro.activo ? 'bg-success' : 'bg-danger'">
                                 {{ libro.activo ? 'Disponible' : 'Ocupado' }}
                             </span>
                         </td>
+                        <td>{{ libro.fechaCreacion }}</td>                        
+                        <td>{{ libro.fechaActualizacion }}</td>                        
                         <td>
                             <app-btn-editar (clickEvent)="openModal(libro)"></app-btn-editar>
                             <app-btn-eliminar (clickEvent)="deleteBooks(libro.id)"></app-btn-eliminar>
@@ -77,10 +83,13 @@
     <app-paginador [data]="libros" (paginatedDataChange)="onPageChange($event)"></app-paginador>
 </div>
 
-<app-modal *ngIf="showModal" [show]="showModal" [title]="libroSeleccionado ? 'Editar libro' : 'Agregar libro'"
+<app-form-modal *ngIf="showModal" [show]="showModal" [title]="!libroSeleccionado ? 'Agregar libro' : 'Editar libro' "
     (closed)="closeModal()">
 
-    <app-libro-form [libro]="libroSeleccionado" (guardado)="onSave()" (cancelar)="closeModal()">
-    </app-libro-form>
+    <app-libro-form [libro]="libroSeleccionado" (guardado)="onSave()" (cancelar)="closeModal()"></app-libro-form>
 
-</app-modal>
+</app-form-modal>
+
+<app-confirm-modal *ngIf="showConfirm" [title]="'Eliminar libro'" [message]="'¿Está seguro que desea eliminar este libro?'"
+  (confirmed)="onConfirmDelete(true)" (cancelled)="onConfirmDelete(false)">
+</app-confirm-modal>

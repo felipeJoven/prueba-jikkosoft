@@ -1,0 +1,87 @@
+<div class="container mt-4">
+    <h1 class="mb-4 text-center">Lista de Autores</h1>
+
+    <div class="d-flex align-items-center justify-content-between mb-3">
+
+        <div class="d-flex justify-content-between" style="min-width: 180px; margin-left: 150px;">
+            <app-btn-agregar (click)="openModal()"></app-btn-agregar>
+        </div>
+
+        <div *ngIf="!isLoading || autores.length !== 0"
+            class="d-flex flex-wrap align-items-center justify-content-center gap-2 flex-grow-1">
+
+            <div class="flex-grow-1" style="min-width: 250px; max-width: 350px; margin-right: 20px;">
+                <app-filtro-busqueda [searchControl]="searchControl" (clear)="clearSearch()"
+                    placeholder="Buscar autor...">
+                </app-filtro-busqueda>
+            </div>
+
+            <div>
+                <app-btn-limpiar (click)="clearSearch()"></app-btn-limpiar>
+            </div>
+
+            <div *ngIf="!errorMessage" class="d-flex justify-content-end" style="min-width: 180px;">
+                <app-filtro-orden [data]="autores" textField="nombre" dateField="fechaCreacion"
+                    (sortedData)="autores = $event">
+                </app-filtro-orden>
+            </div>
+
+        </div>
+    </div>
+
+    <div *ngIf="!isLoading && autores.length === 0 && !errorMessage" class="alert alert-info text-center mx-auto mt-3"
+        style="width: 50%;"> No existen autores registrados
+    </div>
+
+    <div class="table-container">
+        <ng-container *ngIf="!isLoading && autores.length > 0 && !errorMessage; else errorBlock">
+            <table>
+
+                <thead>
+                    <tr *ngIf="autoresPaginados">
+                        <th>Nombre</th>
+                        <th>Nacionalidad</th>
+                        <th>Fecha de creación</th>
+                        <th>Fecha de actualización</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr *ngFor="let autor of autoresPaginados">
+                        <td>{{ autor.nombre }}</td>
+                        <td>{{ autor.nacionalidad }}</td>
+                        <td>{{ autor.fechaCreacion }}</td>                        
+                        <td>{{ autor.fechaActualizacion }}</td>                        
+                        <td>
+                            <app-btn-editar (clickEvent)="openModal(autor)"></app-btn-editar>
+                            <app-btn-eliminar (clickEvent)="deleteAuthors(autor.id)"></app-btn-eliminar>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </ng-container>
+
+        <ng-template #errorBlock>
+            <div *ngIf="!isLoading && errorMessage" class="alert alert-danger text-center mx-auto mt-2"
+                style="width: 50%;">
+                {{ errorMessage }}
+            </div>
+        </ng-template>
+    </div>
+
+    <app-paginador [data]="autores" (paginatedDataChange)="onPageChange($event)"></app-paginador>
+</div>
+
+<app-form-modal *ngIf="showModal" [show]="showModal" [title]="!autorSeleccionado ? 'Agregar autor' : 'Editar autor'"
+    (closed)="closeModal()">
+
+    <app-autor-form [autor]="autorSeleccionado" (guardado)="onSave()" (cancelar)="closeModal()"></app-autor-form>
+
+</app-form-modal>
+
+<app-confirm-modal *ngIf="showConfirm" [title]="'Eliminar autor'" [message]="'¿Está seguro que desea eliminar este autor?'"
+  (confirmed)="onConfirmDelete(true)" (cancelled)="onConfirmDelete(false)">
+</app-confirm-modal>

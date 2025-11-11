@@ -6,8 +6,8 @@ import { AppComponent } from './app.component';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 
 import { LayoutModule } from './layout/layout.module';
-import { AuthModule } from './modules/auth/auth.module';
 import { authInterceptor } from './core/interceptors/interceptor';
+import { AuthModule } from './modules/seguridad/auth/auth.module';
 
 @NgModule({
   declarations: [

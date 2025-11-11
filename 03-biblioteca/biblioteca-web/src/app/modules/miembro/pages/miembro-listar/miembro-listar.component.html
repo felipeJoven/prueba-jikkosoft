@@ -44,8 +44,8 @@
                         <th>Apellido</th>
                         <th>Tipo de identificación</th>
                         <th>Numero de identificación</th>
-                        <th>telefono</th>
-                        <th>activo</th>
+                        <th>Teléfono</th>
+                        <th>Activo</th>
                         <th>Fecha de creación</th>
                         <th>Acciones</th>
                     </tr>
@@ -62,7 +62,7 @@
                         <td>{{ miembro.telefono }}</td>
                         <td>
                             <span class="badge" [ngClass]="miembro.activo ? 'bg-success' : 'bg-danger'">
-                                {{ miembro.activo ? 'Disponible' : 'Ocupado' }}
+                                {{ miembro.activo ? 'Activo' : 'Inactivo' }}
                             </span>
                         </td>
                         <td>{{ miembro.fechaCreacion }}</td>
@@ -87,10 +87,10 @@
     <app-paginador [data]="miembros" (paginatedDataChange)="onPageChange($event)"></app-paginador>
 </div>
 
-<app-modal *ngIf="showModal" [show]="showModal" [title]="miembroSeleccionado ? 'Editar miembro' : 'Agregar miembro'"
+<app-form-modal *ngIf="showModal" [show]="showModal" [title]="miembroSeleccionado ? 'Editar miembro' : 'Agregar miembro'"
     (closed)="closeModal()">
 
     <app-miembro-form [miembro]="miembroSeleccionado" (guardado)="onSave()" (cancelar)="closeModal()">
     </app-miembro-form>
 
-</app-modal>
+</app-form-modal>

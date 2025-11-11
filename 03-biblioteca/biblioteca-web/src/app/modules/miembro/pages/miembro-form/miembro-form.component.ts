@@ -1,8 +1,13 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Miembro } from '../../../miembro/model/miembro.model';
+import { Miembro } from '../../models/miembro.model';
 import { MiembroService } from '../../services/miembro.service';
+
+import { Biblioteca } from '../../../biblioteca/model/biblioteca.model';
+import { TipoIdentificacion } from '../../models/tipo-identificacion.model';
+import { TipoIdentificacionService } from '../../services/tipo-identificacion.service';
+import { BibliotecaService } from '../../../biblioteca/services/biblioteca.service';
 
 
 @Component({
@@ -17,22 +22,28 @@ export class MiembroFormComponent implements OnInit, OnChanges {
   @Output() cancelar = new EventEmitter<void>();
 
   miembroForm: FormGroup;
-  // tipoIdentificacion: TipoIdentificacion[] = [];
-  // biblioteca: Biblioteca[] = [];
+  tiposIdentificacion: TipoIdentificacion[] = [];
+  bibliotecas: Biblioteca[] = [];
 
   constructor(
     private fb: FormBuilder,
     private miembroService: MiembroService,
+    private tipoService: TipoIdentificacionService,
+    private bibliotecaService: BibliotecaService
   ) {
     this.miembroForm = this.fb.group({
-      titulo: ['', Validators.required],     
-    isbn: ['', Validators.required],
-    categoriaId: [0, Validators.required],
+      nombre: ['', Validators.required],
+      apellido: ['', Validators.required],
+      numeroIdentificacion: ['', Validators.required],
+      telefono: ['', Validators.required],
+      tipoIdentificacionId: [null, Validators.required],
+      bibliotecaId: [null, Validators.required],
     });
   }
 
   ngOnInit(): void {
-    // this.loadCategories();
+    this.loadTypes();
+    this.loadLibraries();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -43,16 +54,25 @@ export class MiembroFormComponent implements OnInit, OnChanges {
     }
   }
 
-  // private loadCategories(): void {
-  //   this.categoriaService.obtenerCategorias().subscribe({
-  //     next: (data) => {
-  //       console.log("Respuesta del backend:", data);
-  //       this.categoria = data
-  //     },
-  //     error: (e) => console.log("Error cargando tipos de miembro: ", e)
-
-  //   });
-  // }
+  private loadTypes(): void {
+    this.tipoService.obtenerTiposIdentificacion().subscribe({
+      next: (data) => {
+        console.log("Respuesta del backend:", data);
+        this.tiposIdentificacion = data
+      },
+      error: (e) => console.log("Error cargando tipos de identificación: ", e)
+    });
+  }
+  
+  private loadLibraries(): void {
+    this.bibliotecaService.obtenerBibliotecas().subscribe({
+      next: (data) => {
+        console.log("Respuesta del backend:", data);
+        this.bibliotecas = data
+      },
+      error: (e) => console.log("Error cargando tipos de libros: ", e)
+    });
+  }
 
   onSubmit(): void {
     if (this.miembroForm.valid) {

@@ -1,1 +1,47 @@
-<p>libro-form works!</p>
+<div class="p-3">
+    <form [formGroup]="libroForm" (ngSubmit)="onSubmit()">
+
+        <div class="row mb-3 align-items-center">
+            <label for="titulo" class="col-sm-3 col-form-label">Titulo</label>
+            <div class="col-sm-6">
+                <input type="text" id="titulo" class="form-control" formControlName="titulo"
+                    placeholder="Ingrese el titulo del libro" />
+                <div *ngIf="libroForm.get('titulo')?.invalid && libroForm.get('titulo')?.touched"
+                    class="text-danger mt-1 small">
+                    El titulo es obligatorio
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3 align-items-center">
+            <label for="nombreAutor" class="col-sm-3 col-form-label">Autor</label>
+            <div class="col-sm-6">
+                <select id="nombreAutor" formControlName="autorId" class="form-select form-select-sm">
+                    <option [ngValue]="null" disabled>Seleccione --</option>
+                    <option *ngFor="let autor of autores" [ngValue]="autor.id">{{ autor.nombre }}</option>
+                </select>
+                <div *ngIf="libroForm.get('autorId')?.invalid && libroForm.get('autorId')?.touched"
+                    class="text-danger mt-1 small">
+                    El autor es obligatorio
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3 align-items-center">
+            <label for="isbn" class="col-sm-3 col-form-label">ISBN</label>
+            <div class="col-sm-6">
+                <input type="text" id="isbn" class="form-control" formControlName="isbn"
+                    placeholder="Ingrese la ISBN del libro" />
+                <div *ngIf="libroForm.get('isbn')?.invalid && libroForm.get('isbn')?.touched"
+                    class="text-danger mt-1 small">
+                    El ISBN es obligatorio
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center mt-5 gap-5">
+            <button type="submit" class="btn btn-primary" [disabled]="libroForm.invalid">Guardar</button>
+            <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancelar</button>
+        </div>
+    </form>
+</div>

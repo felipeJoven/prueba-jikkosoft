@@ -1,0 +1,21 @@
+<div class="p-3">
+    <form [formGroup]="categoriaForm" (ngSubmit)="onSubmit()">
+
+        <div class="row mb-3 align-items-center">
+            <label for="nombre" class="col-sm-3 col-form-label">Nombre</label>
+            <div class="col-sm-6">
+                <input type="text" id="nombre" class="form-control" formControlName="nombre"
+                    placeholder="Ingrese el nombre de la categoria" />
+                <div *ngIf="categoriaForm.get('nombre')?.invalid && categoriaForm.get('nombre')?.touched"
+                    class="text-danger mt-1 small">
+                    El nombre es obligatorio
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center mt-5 gap-5">
+            <button type="submit" class="btn btn-primary" [disabled]="categoriaForm.invalid">Guardar</button>
+            <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancelar</button>
+        </div>
+    </form>
+</div>

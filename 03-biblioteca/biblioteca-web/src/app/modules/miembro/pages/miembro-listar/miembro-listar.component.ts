@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
-import { Miembro } from '../../model/miembro.model';
+import { Miembro } from '../../models/miembro.model';
 import { MiembroService } from '../../services/miembro.service';
 
 @Component({
@@ -15,9 +15,9 @@ export class MiembroListarComponent implements OnInit {
   miembrosPaginados: any[] = [];
   miembroSeleccionado: Miembro | null = null;
 
+  errorMessage = '';
   isLoading = true;
   showModal = false;
-  errorMessage = '';
   
   searchControl = new FormControl('');
 

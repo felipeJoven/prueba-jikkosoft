@@ -14,20 +14,22 @@ export class BibliotecaListarComponent implements OnInit {
   bibliotecas: Biblioteca[] = [];
   bibliotecasPaginadas: any[] = [];
   bibliotecaSeleccionada: Biblioteca | null = null;
+  bibliotecaEliminar: number | null = null;
 
+  errorMessage = '';
   isLoading = true;
   showModal = false;
-  errorMessage = '';
+  showConfirm = false;
   
   searchControl = new FormControl('');
 
   constructor(private bibliotecaService: BibliotecaService) { }
 
   ngOnInit(): void {
-    this.loadBooks();
+    this.loadLibraries();
   }
 
-  loadBooks(): void {
+  loadLibraries(): void {
     this.isLoading = true;
     
     this.bibliotecaService.obtenerBibliotecas().subscribe({
@@ -52,7 +54,7 @@ export class BibliotecaListarComponent implements OnInit {
 
   clearSearch(): void {
     this.searchControl.reset('');
-    this.loadBooks();
+    this.loadLibraries();
   }
 
   openModal(biblioteca?: Biblioteca): void {
@@ -67,13 +69,24 @@ export class BibliotecaListarComponent implements OnInit {
 
   onSave(): void {
     this.closeModal();
-    this.loadBooks();
+    this.loadLibraries();
   }
 
-  deleteBooks(id: number): void {
-    this.bibliotecaService.eliminarBiblioteca(id).subscribe({
-      next: () => this.loadBooks(),
-      error: (error) => console.log('Error eliminando la biblioteca ', error)
-    });
+  deleteLibraries(id: number): void {
+    this.bibliotecaEliminar = id;
+    this.showConfirm = true;
+  }
+
+  onConfirmDelete(confirmed: boolean): void {
+    this.showConfirm = false;
+    if (confirmed && this.bibliotecaEliminar !== null) {
+      this.bibliotecaService.eliminarBiblioteca(this.bibliotecaEliminar).subscribe({
+        next: () => this.loadLibraries(),
+        error: (error) => console.log('Error eliminando la biblioteca: ', error),
+        complete: () => (this.bibliotecaEliminar = null)
+      });
+    } else {
+      this.bibliotecaEliminar = null;
+    }
   }
 }

@@ -23,7 +23,9 @@ export class BibliotecaFormComponent implements OnChanges {
   ) {
     this.bibliotecaForm = this.fb.group({
       nombre: ['', Validators.required],     
-      direccion: ['', Validators.required]
+      direccion: ['', Validators.required],
+      barrio: ['', Validators.required],
+      telefono: ['', Validators.required]
     });
   }
 

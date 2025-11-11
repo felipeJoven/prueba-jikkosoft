@@ -4,4 +4,5 @@ export interface Biblioteca {
     fechaActualizacion: Date;
     nombre: string;     
     direccion: string;
+    telefono: string;
 }

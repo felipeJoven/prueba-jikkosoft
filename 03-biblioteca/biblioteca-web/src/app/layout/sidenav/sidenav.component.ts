@@ -25,6 +25,8 @@ export class SidenavComponent implements OnInit {
         { label: 'Bibliotecas', icon: 'fa-solid fa-building-columns', routerLink: '/biblioteca' },
         { label: 'Prestamos', icon: 'fa-solid fa-arrows-rotate', routerLink: '/prestamo' },
         { label: 'Miembros', icon: 'fa-solid fa-users', routerLink: '/miembro' },
+        { label: 'Autores', icon: 'fa-solid fa-pen-nib', routerLink: '/autor' },
+        { label: 'Categorias', icon: 'fa-solid fa-tags', routerLink: '/categoria' },
         { label: 'Usuarios', icon: 'fa-solid fa-users-cog', routerLink: '/usuario' },
       ];
     } else {

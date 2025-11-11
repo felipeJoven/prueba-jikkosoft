@@ -1,1 +1,57 @@
-<p>biblioteca-form works!</p>
+<div class="p-3">
+    <form [formGroup]="bibliotecaForm" (ngSubmit)="onSubmit()">
+
+        <div class="row mb-3 align-items-center">
+            <label for="nombre" class="col-sm-3 col-form-label">Nombre</label>
+            <div class="col-sm-6">
+                <input type="text" id="nombre" class="form-control" formControlName="nombre"
+                    placeholder="Ingrese el nombre de la biblioteca" />
+                <div *ngIf="bibliotecaForm.get('nombre')?.invalid && bibliotecaForm.get('nombre')?.touched"
+                    class="text-danger mt-1 small">
+                    El nombre es obligatorio
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3 align-items-center">
+            <label for="direccion" class="col-sm-3 col-form-label">Dirección</label>
+            <div class="col-sm-6">
+                <input type="text" id="direccion" class="form-control" formControlName="direccion"
+                    placeholder="Ingrese la direccion de la biblioteca" />
+                <div *ngIf="bibliotecaForm.get('direccion')?.invalid && bibliotecaForm.get('direccion')?.touched"
+                    class="text-danger mt-1 small">
+                    La direccion es obligatoria
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3 align-items-center">
+            <label for="barrio" class="col-sm-3 col-form-label">Barrio</label>
+            <div class="col-sm-6">
+                <input type="text" id="barrio" class="form-control" formControlName="barrio"
+                    placeholder="Ingrese el barrio de la biblioteca" />
+                <div *ngIf="bibliotecaForm.get('barrio')?.invalid && bibliotecaForm.get('barrio')?.touched"
+                    class="text-danger mt-1 small">
+                    El barrio es obligatorio
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3 align-items-center">
+            <label for="telefono" class="col-sm-3 col-form-label">Teléfono</label>
+            <div class="col-sm-6">
+                <input type="text" id="telefono" class="form-control" formControlName="telefono"
+                    placeholder="Ingrese el teléfono de la biblioteca" />
+                <div *ngIf="bibliotecaForm.get('telefono')?.invalid && bibliotecaForm.get('telefono')?.touched"
+                    class="text-danger mt-1 small">
+                    El teléfono es obligatorio
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center mt-5 gap-5">
+            <button type="submit" class="btn btn-primary" [disabled]="bibliotecaForm.invalid">Guardar</button>
+            <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancelar</button>
+        </div>
+    </form>
+</div>

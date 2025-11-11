@@ -4,7 +4,7 @@ import { LayoutComponent } from './layout/layout.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: '', loadChildren: () => import('./modules/auth/auth.module').then(m => m.AuthModule) },
+  { path: '', loadChildren: () => import('./modules/seguridad/auth/auth.module').then(m => m.AuthModule) },
   { path: '',
     component: LayoutComponent,
     children: [
@@ -13,7 +13,9 @@ const routes: Routes = [
       { path: 'biblioteca', loadChildren:() => import('./modules/biblioteca/biblioteca.module').then(m => m.BibliotecaModule) },
       { path: 'prestamo', loadChildren:() => import('./modules/prestamo/prestamo.module').then(m => m.PrestamoModule) },
       { path: 'miembro', loadChildren:() => import('./modules/miembro/miembro.module').then(m => m.MiembroModule) },
-      { path: 'usuario', loadChildren:() => import('./modules/usuario/usuario.module').then(m => m.UsuarioModule) },
+      { path: 'autor', loadChildren:() => import('./modules/autor/autor.module').then(m => m.AutorModule) },
+      { path: 'categoria', loadChildren:() => import('./modules/categoria/categoria.module').then(m => m.CategoriaModule) },
+      { path: 'usuario', loadChildren:() => import('./modules/seguridad/usuario/usuario.module').then(m => m.UsuarioModule) },
     ]
   },
   { path: '**', redirectTo: 'inicio' }   

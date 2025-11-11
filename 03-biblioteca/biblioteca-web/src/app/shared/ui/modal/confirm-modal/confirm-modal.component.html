@@ -1,0 +1,18 @@
+<div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+      <div class="modal-header bg-warning justify-content-center">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ title }}
+    </div>
+
+      <div class="modal-body text-center">
+        <p>{{ message }}</p>
+      </div>
+
+      <div class="modal-footer justify-content-center border-0">
+        <button type="button" class="btn btn-secondary px-4" (click)="onCancel()">No</button>
+        <button type="button" class="btn btn-confirm px-4" (click)="onConfirm()">Sí</button>
+      </div>
+    </div>
+  </div>
+</div>

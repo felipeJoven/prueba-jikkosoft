@@ -1,1 +1,85 @@
-<p>miembro-form works!</p>
+<div class="p-3">
+    <form [formGroup]="miembroForm" (ngSubmit)="onSubmit()">
+
+        <div class="row mb-3 align-items-center">
+            <label for="biblioteca" class="col-sm-3 col-form-label">Biblioteca</label>
+            <div class="col-sm-4">
+                <select id="biblioteca" formControlName="bibliotecaId" class="form-select form-select-sm">
+                    <option [ngValue]="null" disabled>Seleccione --</option>
+                    <option *ngFor="let biblioteca of bibliotecas" [ngValue]="biblioteca.id">{{ biblioteca.nombre }}</option>
+                </select>
+                <div *ngIf="miembroForm.get('bibliotecaId')?.invalid && miembroForm.get('bibliotecaId')?.touched"
+                    class="text-danger mt-1 small">
+                    La biblioteca es obligatoria
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3 align-items-center">
+            <label for="nombre" class="col-sm-3 col-form-label">Nombre</label>
+            <div class="col-sm-6">
+                <input type="text" id="nombre" class="form-control" formControlName="nombre"
+                    placeholder="Ingrese el nombre del miembro" />
+                <div *ngIf="miembroForm.get('nombre')?.invalid && miembroForm.get('nombre')?.touched"
+                    class="text-danger mt-1 small">
+                    El nombre es obligatorio
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3 align-items-center">
+            <label for="apellido" class="col-sm-3 col-form-label">Apellido</label>
+            <div class="col-sm-6">
+                <input type="text" id="apellido" class="form-control" formControlName="apellido"
+                    placeholder="Ingrese el apellido del miembro" />
+                <div *ngIf="miembroForm.get('apellido')?.invalid && miembroForm.get('apellido')?.touched"
+                    class="text-danger mt-1 small">
+                    El apellido es obligatorio
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3 align-items-center">
+            <label for="tipoIdentificacion" class="col-sm-3 col-form-label">Tipo de identificación</label>
+            <div class="col-sm-3">
+                <select id="tipoIdentificacion" formControlName="tipoIdentificacionId" class="form-select form-select-sm">
+                    <option [ngValue]="null" disabled>Seleccione --</option>
+                    <option *ngFor="let tipo of tiposIdentificacion" [ngValue]="tipo.id">{{ tipo.tipo }}</option>
+                </select>
+                <div *ngIf="miembroForm.get('tipoIdentificacionId')?.invalid && miembroForm.get('tipoIdentificacionId')?.touched"
+                    class="text-danger mt-1 small">
+                    El tipo de Identificación es obligatorio
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3 align-items-center">
+            <label for="numeroIdentificacion" class="col-sm-3 col-form-label">Número de identificación</label>
+            <div class="col-sm-6">
+                <input type="text" id="numeroIdentificacion" class="form-control" formControlName="numeroIdentificacion"
+                    placeholder="Ingrese el numero de identificación del miembro" />
+                <div *ngIf="miembroForm.get('numeroIdentificacion')?.invalid && miembroForm.get('numeroIdentificacion')?.touched"
+                    class="text-danger mt-1 small">
+                    El número de identificación es obligatorio
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3 align-items-center">
+            <label for="telefono" class="col-sm-3 col-form-label">Teléfono</label>
+            <div class="col-sm-6">
+                <input type="text" id="telefono" class="form-control" formControlName="telefono"
+                    placeholder="Ingrese el telefono del miembro" />
+                <div *ngIf="miembroForm.get('telefono')?.invalid && miembroForm.get('telefono')?.touched"
+                    class="text-danger mt-1 small">
+                    El teléfono es obligatorio
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center mt-5 gap-5">
+            <button type="submit" class="btn btn-primary" [disabled]="miembroForm.invalid">Guardar</button>
+            <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancelar</button>
+        </div>
+    </form>
+</div>

@@ -1,1 +1,59 @@
-<p>prestamo-form works!</p>
+<div class="p-3">
+    <form [formGroup]="prestamoForm" (ngSubmit)="onSubmit()">
+
+        <div class="row mb-3 align-items-center">
+            <label for="fechaPrestamo" class="col-sm-3 col-form-label">Fecha de préstamo</label>
+            <div class="col-sm-3">
+                <input type="date" id="fechaPrestamo" class="form-control" formControlName="fechaPrestamo" />
+                <div *ngIf="prestamoForm.get('fechaPrestamo')?.invalid && prestamoForm.get('fechaPrestamo')?.touched"
+                    class="text-danger mt-1 small">
+                    La fecha préstamo es obligatoria
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3 align-items-center">
+            <label for="fechaDevolucion" class="col-sm-3 col-form-label">Fecha de devolución</label>
+            <div class="col-sm-3">
+                <input type="date" id="fechaDevolucion" class="form-control" formControlName="fechaDevolucion" />
+                <div *ngIf="prestamoForm.get('fechaDevolucion')?.invalid && prestamoForm.get('fechaDevolucion')?.touched"
+                    class="text-danger mt-1 small">
+                    La fecha devolución es obligatoria
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3 align-items-center">
+            <label for="libro" class="col-sm-3 col-form-label">Libro</label>
+            <div class="col-sm-6">
+                <select id="libro" formControlName="libroId" class="form-select form-select-sm">
+                    <option [ngValue]="null" disabled>Seleccione --</option>
+                    <option *ngFor="let libro of libros" [ngValue]="libro.id">{{ libro.titulo }}</option>
+                </select>
+                <div *ngIf="prestamoForm.get('libroId')?.invalid && prestamoForm.get('libroId')?.touched"
+                    class="text-danger mt-1 small">
+                    El autor es obligatorio
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3 align-items-center">
+            <label for="miembro" class="col-sm-3 col-form-label">Miembro</label>
+            <div class="col-sm-6">
+                <select id="miembro" formControlName="miembroId" class="form-select form-select-sm">
+                    <option [ngValue]="null" disabled>Seleccione --</option>
+                    <option *ngFor="let miembro of miembros" [ngValue]="miembro.id">{{ miembro.numeroIdentificacion }}</option>
+                </select>
+                <div *ngIf="prestamoForm.get('miembroId')?.invalid && prestamoForm.get('miembroId')?.touched"
+                    class="text-danger mt-1 small">
+                    El autor es obligatorio
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center mt-5 gap-5">
+            <button type="submit" class="btn btn-primary" [disabled]="prestamoForm.invalid">Guardar</button>
+            <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancelar</button>
+        </div>
+    </form>
+</div>

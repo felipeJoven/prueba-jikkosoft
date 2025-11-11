@@ -81,10 +81,10 @@
     <app-paginador [data]="prestamos" (paginatedDataChange)="onPageChange($event)"></app-paginador>
 </div>
 
-<app-modal *ngIf="showModal" [show]="showModal" [title]="prestamoSeleccionado ? 'Editar prestamo' : 'Agregar prestamo'"
+<app-form-modal *ngIf="showModal" [show]="showModal" [title]="prestamoSeleccionado ? 'Editar prestamo' : 'Agregar prestamo'"
     (closed)="closeModal()">
 
     <app-prestamo-form [prestamo]="prestamoSeleccionado" (guardado)="onSave()" (cancelar)="closeModal()">
     </app-prestamo-form>
 
-</app-modal>
+</app-form-modal>

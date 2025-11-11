@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { SharedModule } from '../../shared/shared.module';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { LibroRoutingModule } from './libro-routing.module';
 import { LibroListarComponent } from './pages/libro-listar/libro-listar.component';
@@ -16,7 +16,7 @@ import { LibroFormComponent } from './pages/libro-form/libro-form.component';
   ],
   imports: [
     CommonModule,
-    FormsModule,
+    ReactiveFormsModule,
     SharedModule,
     LibroRoutingModule
   ]
