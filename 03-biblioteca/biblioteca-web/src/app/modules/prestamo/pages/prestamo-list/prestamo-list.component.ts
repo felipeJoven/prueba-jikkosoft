@@ -5,11 +5,11 @@ import { Prestamo } from '../../model/prestamo.model';
 import { PrestamoService } from '../../services/prestamo.service';
 
 @Component({
-  selector: 'app-prestamo-listar',
-  templateUrl: './prestamo-listar.component.html',
-  styleUrl: './prestamo-listar.component.css'
+  selector: 'app-prestamo-list',
+  templateUrl: './prestamo-list.component.html',
+  styleUrl: './prestamo-list.component.css'
 })
-export class PrestamoListarComponent implements OnInit {
+export class PrestamoListComponent implements OnInit {
 
   prestamos: Prestamo[] = [];
   prestamosPaginados: any[] = [];

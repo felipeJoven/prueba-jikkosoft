@@ -5,11 +5,11 @@ import { Usuario } from '../../models/usuario.model';
 import { UsuarioService } from '../../services/usuario.service';
 
 @Component({
-  selector: 'app-usuario-listar',
-  templateUrl: './usuario-listar.component.html',
-  styleUrls: ['./usuario-listar.component.css']
+  selector: 'app-usuario-list',
+  templateUrl: './usuario-list.component.html',
+  styleUrls: ['./usuario-list.component.css']
 })
-export class UsuarioListarComponent implements OnInit {
+export class UsuarioListComponent implements OnInit {
 
   usuarios: Usuario[] = [];
   usuariosPaginados: any[] = [];

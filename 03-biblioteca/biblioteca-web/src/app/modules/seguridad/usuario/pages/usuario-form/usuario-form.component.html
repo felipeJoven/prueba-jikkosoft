@@ -68,7 +68,7 @@
 
         <div class="row mb-3 align-items-center">
             <label for="rol" class="col-sm-3 col-form-label">Rol</label>
-            <div class="col-sm-6">
+            <div class="col-sm-3">
                 <select id="rol" formControlName="rolId" class="form-select form-select-sm">
                     <option [ngValue]="null" disabled>Seleccione --</option>
                     <option *ngFor="let rol of roles" [ngValue]="rol.id">{{ rol.rol }}</option>

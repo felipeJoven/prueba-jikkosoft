@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AutorListarComponent } from './pages/autor-listar/autor-listar.component';
+import { AutorListComponent } from './pages/autor-list/autor-list.component';
 
 const routes: Routes = [
-  { path: '', component: AutorListarComponent }
+  { path: '', component: AutorListComponent }
 ];
 
 @NgModule({

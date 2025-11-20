@@ -1,0 +1,16 @@
+<div class="position-relative">
+
+  <input [id]="id" type="text" class="form-control" [placeholder]="placeholder" [value]="selectedOption"
+    [readonly]="readonly" (input)="onInput($event)" (focus)="onFocus()" />
+
+  <button *ngIf="selectedOption" type="button" class="clear-btn"(click)="clearSelection()">
+    <i class="bi bi-x-circle"></i>
+  </button>
+
+  <ul *ngIf="isDropdownOpen" class="dropdown-list">
+    <li class="dropdown-item" *ngFor="let opt of filteredOptions" (click)="selectOption(opt)">
+      {{ opt }}
+    </li>
+  </ul>
+
+</div>

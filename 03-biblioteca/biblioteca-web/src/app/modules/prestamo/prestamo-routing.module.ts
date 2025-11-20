@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { PrestamoListarComponent } from './pages/prestamo-listar/prestamo-listar.component';
+import { PrestamoListComponent } from './pages/prestamo-list/prestamo-list.component';
 
 const routes: Routes = [
-  { path: '', component: PrestamoListarComponent }
+  { path: '', component: PrestamoListComponent }
 ];
 
 @NgModule({

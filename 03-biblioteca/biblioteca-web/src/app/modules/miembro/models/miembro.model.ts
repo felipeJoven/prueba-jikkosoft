@@ -10,5 +10,5 @@ export interface Miembro {
     tipoIdentificacionId: number;
     tipoIdentificacion: string;
     bibliotecaId: number;
-    biblioteca: string;
+    nombreBiblioteca: string;
 }

@@ -5,13 +5,13 @@ import { SharedModule } from '../../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { LibroRoutingModule } from './libro-routing.module';
-import { LibroListarComponent } from './pages/libro-listar/libro-listar.component';
+import { LibroListComponent } from './pages/libro-list/libro-list.component';
 import { LibroFormComponent } from './pages/libro-form/libro-form.component';
 
 
 @NgModule({
   declarations: [
-    LibroListarComponent,
+    LibroListComponent,
     LibroFormComponent
   ],
   imports: [

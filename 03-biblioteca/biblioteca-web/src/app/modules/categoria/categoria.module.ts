@@ -5,13 +5,13 @@ import { SharedModule } from '../../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { CategoriaRoutingModule } from './categoria-routing.module';
-import { CategoriaListarComponent } from './pages/categoria-listar/categoria-listar.component';
+import { CategoriaListComponent } from './pages/categoria-list/categoria-list.component';
 import { CategoriaFormComponent } from './pages/categoria-form/categoria-form.component';
 
 
 @NgModule({
   declarations: [
-    CategoriaListarComponent,
+    CategoriaListComponent,
     CategoriaFormComponent
   ],
   imports: [

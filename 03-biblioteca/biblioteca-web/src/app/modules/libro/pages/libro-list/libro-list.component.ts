@@ -5,11 +5,11 @@ import { Libro } from '../../model/libro.model';
 import { LibroService } from '../../services/libro.service';
 
 @Component({
-  selector: 'app-libro-listar',
-  templateUrl: './libro-listar.component.html',
-  styleUrl: './libro-listar.component.css'
+  selector: 'app-libro-list',
+  templateUrl: './libro-list.component.html',
+  styleUrl: './libro-list.component.css'
 })
-export class LibroListarComponent implements OnInit {
+export class LibroListComponent implements OnInit {
 
   libros: Libro[] = [];
   librosPaginados: any[] = [];
@@ -76,8 +76,9 @@ export class LibroListarComponent implements OnInit {
     this.showConfirm = true;
   }
 
-  onConfirmDelete(confirmed: boolean): void {
+  onConfirmDelete(confirmed: boolean): void {    
     this.showConfirm = false;
+    
     if (confirmed && this.libroEliminar !== null) {
       this.libroService.eliminarLibro(this.libroEliminar).subscribe({
         next: () => this.loadBooks(),

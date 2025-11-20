@@ -5,11 +5,11 @@ import { Biblioteca } from '../../model/biblioteca.model';
 import { BibliotecaService } from '../../services/biblioteca.service';
 
 @Component({
-  selector: 'app-biblioteca-listar',
-  templateUrl: './biblioteca-listar.component.html',
-  styleUrl: './biblioteca-listar.component.css'
+  selector: 'app-biblioteca-list',
+  templateUrl: './biblioteca-list.component.html',
+  styleUrl: './biblioteca-list.component.css'
 })
-export class BibliotecaListarComponent implements OnInit {
+export class BibliotecaListComponent implements OnInit {
 
   bibliotecas: Biblioteca[] = [];
   bibliotecasPaginadas: any[] = [];

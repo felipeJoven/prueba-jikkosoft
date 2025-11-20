@@ -5,11 +5,11 @@ import { Categoria } from '../../model/categoria.model';
 import { CategoriaService } from '../../service/categoria.service';
 
 @Component({
-  selector: 'app-categoria-listar',
-  templateUrl: './categoria-listar.component.html',
-  styleUrl: './categoria-listar.component.css'
+  selector: 'app-categoria-list',
+  templateUrl: './categoria-list.component.html',
+  styleUrl: './categoria-list.component.css'
 })
-export class CategoriaListarComponent implements OnInit {
+export class CategoriaListComponent implements OnInit {
 
   categorias: Categoria[] = [];
   categoriasPaginadas: any[] = [];

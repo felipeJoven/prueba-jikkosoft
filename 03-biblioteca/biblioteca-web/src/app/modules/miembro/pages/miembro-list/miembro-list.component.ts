@@ -5,38 +5,40 @@ import { Miembro } from '../../models/miembro.model';
 import { MiembroService } from '../../services/miembro.service';
 
 @Component({
-  selector: 'app-miembro-listar',
-  templateUrl: './miembro-listar.component.html',
-  styleUrl: './miembro-listar.component.css'
+  selector: 'app-miembro-list',
+  templateUrl: './miembro-list.component.html',
+  styleUrl: './miembro-list.component.css'
 })
-export class MiembroListarComponent implements OnInit {
+export class MiembroListComponent implements OnInit {
 
   miembros: Miembro[] = [];
   miembrosPaginados: any[] = [];
   miembroSeleccionado: Miembro | null = null;
+  miembroIdEliminar: number | null = null;
 
   errorMessage = '';
   isLoading = true;
   showModal = false;
-  
+  showConfirm = false;
+
   searchControl = new FormControl('');
 
   constructor(private miembroService: MiembroService) { }
 
   ngOnInit(): void {
-    this.loadBooks();
+    this.cargarMiembros();
   }
 
-  loadBooks(): void {
+  cargarMiembros(): void {
     this.isLoading = true;
-    
+
     this.miembroService.obtenerMiembros().subscribe({
       next: (data) => {
         console.log("Miembros: ", data);
         this.miembros = data;
         setTimeout(() => {
           this.isLoading = false;
-        }, 500);        
+        }, 500);
       },
       error: (e) => {
         console.log("Error cargando miembros: ", e);
@@ -50,9 +52,9 @@ export class MiembroListarComponent implements OnInit {
     this.miembrosPaginados = data;
   }
 
-  clearSearch(): void {
+  limpiarBusqueda(): void {
     this.searchControl.reset('');
-    this.loadBooks();
+    this.cargarMiembros();
   }
 
   openModal(miembro?: Miembro): void {
@@ -67,13 +69,25 @@ export class MiembroListarComponent implements OnInit {
 
   onSave(): void {
     this.closeModal();
-    this.loadBooks();
+    this.cargarMiembros();
   }
 
-  deleteBooks(id: number): void {
-    this.miembroService.eliminarMiembro(id).subscribe({
-      next: () => this.loadBooks(),
-      error: (error) => console.log('Error eliminando la miembro ', error)
-    });
+  eliminarMiembro(id: number): void {
+    this.miembroIdEliminar = id;
+    this.showConfirm = true;
+  }
+
+  onConfirmDelete(confirmed: boolean) {
+    this.showConfirm = false;
+    
+    if (confirmed && this.miembroIdEliminar !== null) {
+      this.miembroService.eliminarMiembro(this.miembroIdEliminar).subscribe({
+        next: () => this.cargarMiembros(),
+        error: (error) => console.log('Error eliminando la miembro ', error),
+        complete: () => (this.miembroIdEliminar = null)
+      });
+    } else {
+      this.miembroIdEliminar = null;
+    }
   }
 }

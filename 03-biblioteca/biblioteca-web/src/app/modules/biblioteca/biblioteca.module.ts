@@ -5,13 +5,13 @@ import { SharedModule } from '../../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { BibliotecaRoutingModule } from './biblioteca-routing.module';
-import { BibliotecaListarComponent } from './pages/biblioteca-listar/biblioteca-listar.component';
+import { BibliotecaListComponent } from './pages/biblioteca-list/biblioteca-list.component';
 import { BibliotecaFormComponent } from './pages/biblioteca-form/biblioteca-form.component';
 
 
 @NgModule({
   declarations: [
-    BibliotecaListarComponent,
+    BibliotecaListComponent,
     BibliotecaFormComponent
   ],
   imports: [

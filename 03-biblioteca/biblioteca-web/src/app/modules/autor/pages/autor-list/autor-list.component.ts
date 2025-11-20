@@ -5,11 +5,11 @@ import { Autor } from '../../model/autor.model';
 import { AutorService } from '../../services/autor.service';
 
 @Component({
-  selector: 'app-autor-listar',
-  templateUrl: './autor-listar.component.html',
-  styleUrl: './autor-listar.component.css'
+  selector: 'app-autor-list',
+  templateUrl: './autor-list.component.html',
+  styleUrl: './autor-list.component.css'
 })
-export class AutorListarComponent implements OnInit {
+export class AutorListComponent implements OnInit {
 
   autores: Autor[] = [];
   autoresPaginados: any[] = [];

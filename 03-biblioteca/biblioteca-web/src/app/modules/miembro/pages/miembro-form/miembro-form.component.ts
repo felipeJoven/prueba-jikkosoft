@@ -18,12 +18,15 @@ import { BibliotecaService } from '../../../biblioteca/services/biblioteca.servi
 export class MiembroFormComponent implements OnInit, OnChanges {
 
   @Input() miembro: Miembro | null = null;
+  
   @Output() guardado = new EventEmitter<void>();
   @Output() cancelar = new EventEmitter<void>();
 
   miembroForm: FormGroup;
   tiposIdentificacion: TipoIdentificacion[] = [];
   bibliotecas: Biblioteca[] = [];
+  nombresBibliotecas: string[] = [];
+  bibliotecaSeleccionada: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -38,40 +41,65 @@ export class MiembroFormComponent implements OnInit, OnChanges {
       telefono: ['', Validators.required],
       tipoIdentificacionId: [null, Validators.required],
       bibliotecaId: [null, Validators.required],
+      activo: [true]
     });
   }
 
   ngOnInit(): void {
-    this.loadTypes();
-    this.loadLibraries();
+    this.cargarTiposIdentificacion();
+    this.cargarBibliotecas();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['miembro'] && this.miembro) {
       this.miembroForm.patchValue(this.miembro);
+      if (this.bibliotecas.length > 0) {
+        this.sincronizarBiblioteca();
+      }
     } else {
       this.miembroForm.reset();
     }
   }
 
-  private loadTypes(): void {
+  private cargarTiposIdentificacion(): void {
     this.tipoService.obtenerTiposIdentificacion().subscribe({
       next: (data) => {
-        console.log("Respuesta del backend:", data);
         this.tiposIdentificacion = data
       },
       error: (e) => console.log("Error cargando tipos de identificación: ", e)
     });
   }
-  
-  private loadLibraries(): void {
+
+  private cargarBibliotecas(): void {
     this.bibliotecaService.obtenerBibliotecas().subscribe({
       next: (data) => {
-        console.log("Respuesta del backend:", data);
-        this.bibliotecas = data
+        this.bibliotecas = data;
+        this.nombresBibliotecas = data.map(b => b.nombre);
+
+
+        this.sincronizarBiblioteca();
+
       },
-      error: (e) => console.log("Error cargando tipos de libros: ", e)
+      error: (e) => console.error("Error cargando bibliotecas: ", e)
     });
+  }
+
+  private sincronizarBiblioteca(): void {
+    if (!this.miembro) return;
+
+    const biblioteca = this.bibliotecas.find(b => b.id === this.miembro?.bibliotecaId);
+
+    this.bibliotecaSeleccionada = biblioteca ? biblioteca.nombre : '';
+  }
+
+  onSelectBiblioteca(nombre: string) {
+    const biblioteca = this.bibliotecas.find(b => b.nombre === nombre);
+
+    if (biblioteca) {
+      this.miembroForm.patchValue({ bibliotecaId: biblioteca.id });
+    } else {
+      this.miembroForm.patchValue({ bibliotecaId: null });
+    }
   }
 
   onSubmit(): void {

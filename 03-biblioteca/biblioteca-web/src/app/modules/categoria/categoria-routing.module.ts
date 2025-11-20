@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { CategoriaListarComponent } from './pages/categoria-listar/categoria-listar.component';
+import { CategoriaListComponent } from './pages/categoria-list/categoria-list.component';
 
 const routes: Routes = [
-  { path: '', component: CategoriaListarComponent }
+  { path: '', component: CategoriaListComponent }
 ];
 
 @NgModule({

@@ -11,6 +11,7 @@ import { BtnLimpiarComponent } from './ui/buttons/btn-limpiar/btn-limpiar.compon
 import { PaginadorComponent } from './ui/paginator/paginador.component';
 import { FormModalComponent } from './ui/modal/form-modal/form-modal.component';
 import { ConfirmModalComponent } from './ui/modal/confirm-modal/confirm-modal.component';
+import { AutocompleteInputComponent } from './ui/input/autocomplete-input.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { ConfirmModalComponent } from './ui/modal/confirm-modal/confirm-modal.co
     FiltroBusquedaComponent,
     FiltroOrdenComponent,
     BtnLimpiarComponent,
-    PaginadorComponent
+    PaginadorComponent,
+    AutocompleteInputComponent
   ],
   imports: [ 
     CommonModule, 
@@ -38,7 +40,8 @@ import { ConfirmModalComponent } from './ui/modal/confirm-modal/confirm-modal.co
     FiltroBusquedaComponent,
     FiltroOrdenComponent,
     BtnLimpiarComponent,
-    PaginadorComponent
+    PaginadorComponent,
+    AutocompleteInputComponent
   ]
 })
 export class SharedModule {}
