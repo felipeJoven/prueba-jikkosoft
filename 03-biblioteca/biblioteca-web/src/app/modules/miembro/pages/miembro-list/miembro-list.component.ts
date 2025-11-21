@@ -45,7 +45,6 @@ export class MiembroListComponent implements OnInit {
         this.isLoading = false;
       }
     });
-
   }
 
   onPageChange(data: any[]) {
@@ -79,7 +78,7 @@ export class MiembroListComponent implements OnInit {
 
   onConfirmDelete(confirmed: boolean) {
     this.showConfirm = false;
-    
+
     if (confirmed && this.miembroIdEliminar !== null) {
       this.miembroService.eliminarMiembro(this.miembroIdEliminar).subscribe({
         next: () => this.cargarMiembros(),

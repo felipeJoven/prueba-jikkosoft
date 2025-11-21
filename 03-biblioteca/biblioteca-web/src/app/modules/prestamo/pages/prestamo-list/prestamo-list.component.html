@@ -11,13 +11,13 @@
             class="d-flex flex-wrap align-items-center justify-content-center gap-2 flex-grow-1">
 
             <div class="flex-grow-1" style="min-width: 250px; max-width: 350px; margin-right: 20px;">
-                <app-filtro-busqueda [searchControl]="searchControl" (clear)="clearSearch()"
+                <app-filtro-busqueda [searchControl]="searchControl" (clear)="limpiarBusqueda()"
                     placeholder="Buscar prestamo...">
                 </app-filtro-busqueda>
             </div>
 
             <div>
-                <app-btn-limpiar (click)="clearSearch()"></app-btn-limpiar>
+                <app-btn-limpiar (click)="limpiarBusqueda()"></app-btn-limpiar>
             </div>
 
             <div *ngIf="!errorMessage" class="d-flex justify-content-end" style="min-width: 180px;">
@@ -36,7 +36,6 @@
     <div class="table-container">
         <ng-container *ngIf="!isLoading && prestamos.length > 0 && !errorMessage; else errorBlock">
             <table>
-
                 <thead>
                     <tr *ngIf="prestamosPaginados">
                         <th>Fecha de préstamo</th>
@@ -49,7 +48,6 @@
                 </thead>
 
                 <tbody>
-
                     <tr *ngFor="let prestamo of prestamosPaginados">
                         <td>{{ prestamo.fechaPrestamo }}</td>
                         <td>{{ prestamo.fechaDevolucion }}</td>
@@ -62,10 +60,9 @@
                         </td>
                         <td>
                             <app-btn-editar (clickEvent)="openModal(prestamo)"></app-btn-editar>
-                            <app-btn-eliminar (clickEvent)="deleteBooks(prestamo.id)"></app-btn-eliminar>
+                            <app-btn-eliminar (clickEvent)="eliminarPrestamo(prestamo.id)"></app-btn-eliminar>
                         </td>
                     </tr>
-
                 </tbody>
             </table>
         </ng-container>
@@ -81,10 +78,15 @@
     <app-paginador [data]="prestamos" (paginatedDataChange)="onPageChange($event)"></app-paginador>
 </div>
 
-<app-form-modal *ngIf="showModal" [show]="showModal" [title]="prestamoSeleccionado ? 'Editar prestamo' : 'Agregar prestamo'"
-    (closed)="closeModal()">
+<app-form-modal *ngIf="showModal" [show]="showModal"
+    [title]="prestamoSeleccionado ? 'Editar prestamo' : 'Agregar prestamo'" (closed)="closeModal()">
 
     <app-prestamo-form [prestamo]="prestamoSeleccionado" (guardado)="onSave()" (cancelar)="closeModal()">
     </app-prestamo-form>
 
 </app-form-modal>
+
+<app-confirm-modal *ngIf="showConfirm" [show]="showConfirm" [title]="'Eliminar préstamo'"
+    [message]="'¿Está seguro que desea eliminar este préstamo?'" (confirmed)="onConfirmDelete(true)"
+    (cancelled)="onConfirmDelete(false)">
+</app-confirm-modal>

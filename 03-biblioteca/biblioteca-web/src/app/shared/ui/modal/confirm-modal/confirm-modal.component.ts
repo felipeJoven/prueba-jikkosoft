@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-confirm-modal',
@@ -7,6 +7,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class ConfirmModalComponent {
 
+  @Input() show: boolean = false;
   @Input() title: string = '';
   @Input() message: string = '';
   @Output() confirmed = new EventEmitter<void>();
@@ -17,6 +18,18 @@ export class ConfirmModalComponent {
   }
 
   onCancel() {
-    this.cancelled.emit();  
+    this.cancelled.emit();
+
+    const activeElement = document.activeElement as HTMLElement;
+    if (activeElement) {
+      activeElement.blur();
+    }
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeydown(event: KeyboardEvent) {
+    if (event.key === 'Escape' && this.show) {
+      this.onCancel();
+    }
   }
 }

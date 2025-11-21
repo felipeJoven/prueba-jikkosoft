@@ -12,17 +12,15 @@ import { BibliotecaService } from '../../services/biblioteca.service';
 export class BibliotecaFormComponent implements OnChanges {
 
   @Input() biblioteca: Biblioteca | null = null;
+
   @Output() guardado = new EventEmitter<void>();
   @Output() cancelar = new EventEmitter<void>();
 
   bibliotecaForm: FormGroup;
 
-  constructor(
-    private fb: FormBuilder,
-    private bibliotecaService: BibliotecaService
-  ) {
+  constructor(private fb: FormBuilder, private bibliotecaService: BibliotecaService) {
     this.bibliotecaForm = this.fb.group({
-      nombre: ['', Validators.required],     
+      nombre: ['', Validators.required],
       direccion: ['', Validators.required],
       barrio: ['', Validators.required],
       telefono: ['', Validators.required]

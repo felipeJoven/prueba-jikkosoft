@@ -26,30 +26,25 @@
         <div class="row mb-3 align-items-center">
             <label for="libro" class="col-sm-3 col-form-label">Libro</label>
             <div class="col-sm-6">
-                <select id="libro" formControlName="libroId" class="form-select form-select-sm">
-                    <option [ngValue]="null" disabled>Seleccione --</option>
-                    <option *ngFor="let libro of libros" [ngValue]="libro.id">{{ libro.titulo }}</option>
-                </select>
-                <div *ngIf="prestamoForm.get('libroId')?.invalid && prestamoForm.get('libroId')?.touched"
-                    class="text-danger mt-1 small">
-                    El autor es obligatorio
-                </div>
+                <app-autocomplete-input [id]="'tituloLibro'" [options]="titulosLibros" [placeholder]="'Buscar libro...'"
+                    [selectedOption]="libroSeleccionado" (selectionChange)="onSelectLibro($event)">
+                </app-autocomplete-input>
             </div>
         </div>
 
         <div class="row mb-3 align-items-center">
             <label for="miembro" class="col-sm-3 col-form-label">Miembro</label>
-            <div class="col-sm-6">
-                <select id="miembro" formControlName="miembroId" class="form-select form-select-sm">
-                    <option [ngValue]="null" disabled>Seleccione --</option>
-                    <option *ngFor="let miembro of miembros" [ngValue]="miembro.id">{{ miembro.numeroIdentificacion }}</option>
-                </select>
-                <div *ngIf="prestamoForm.get('miembroId')?.invalid && prestamoForm.get('miembroId')?.touched"
-                    class="text-danger mt-1 small">
-                    El autor es obligatorio
-                </div>
+            <div class="col-sm-3">
+                <app-autocomplete-input [id]="'numeroIdentificacionMiembro'" [options]="numerosIdMiembros"
+                    [placeholder]="'Buscar miembro...'" [selectedOption]="miembroSeleccionado"
+                    (selectionChange)="onSelectMiembro($event)">
+                </app-autocomplete-input>
+            </div>
+            <div class="col-sm-4">
+                <input type="text" id="nombre" class="form-control" [value]="nombreMiembro" disabled>
             </div>
         </div>
+
 
         <div class="d-flex justify-content-center mt-5 gap-5">
             <button type="submit" class="btn btn-primary" [disabled]="prestamoForm.invalid">Guardar</button>

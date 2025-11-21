@@ -12,14 +12,15 @@ import { AutorService } from '../../services/autor.service';
 export class AutorFormComponent implements OnChanges {
 
   @Input() autor: Autor | null = null;
+
   @Output() guardado = new EventEmitter<void>();
   @Output() cancelar = new EventEmitter<void>();
 
   autorForm: FormGroup;
 
-  constructor( private fb: FormBuilder, private autorService: AutorService ) {
+  constructor(private fb: FormBuilder, private autorService: AutorService) {
     this.autorForm = this.fb.group({
-      nombre: ['', Validators.required],     
+      nombre: ['', Validators.required],
       nacionalidad: ['', Validators.required]
     });
   }

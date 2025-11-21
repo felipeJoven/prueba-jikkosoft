@@ -11,13 +11,13 @@
             class="d-flex flex-wrap align-items-center justify-content-center gap-2 flex-grow-1">
 
             <div class="flex-grow-1" style="min-width: 250px; max-width: 350px; margin-right: 20px;">
-                <app-filtro-busqueda [searchControl]="searchControl" (clear)="clearSearch()"
+                <app-filtro-busqueda [searchControl]="searchControl" (clear)="limpiarBusqueda()"
                     placeholder="Buscar libro...">
                 </app-filtro-busqueda>
             </div>
 
             <div>
-                <app-btn-limpiar (click)="clearSearch()"></app-btn-limpiar>
+                <app-btn-limpiar (click)="limpiarBusqueda()"></app-btn-limpiar>
             </div>
 
             <div *ngIf="!errorMessage" class="d-flex justify-content-end" style="min-width: 180px;">
@@ -36,7 +36,6 @@
     <div class="table-container">
         <ng-container *ngIf="!isLoading && libros.length > 0 && !errorMessage; else errorBlock">
             <table>
-
                 <thead>
                     <tr *ngIf="librosPaginados">
                         <th>Nombre</th>
@@ -50,7 +49,6 @@
                 </thead>
 
                 <tbody>
-
                     <tr *ngFor="let libro of librosPaginados">
                         <td>{{ libro.titulo }}</td>
                         <td>{{ libro.nombreAutor }}</td>
@@ -60,14 +58,13 @@
                                 {{ libro.activo ? 'Disponible' : 'Ocupado' }}
                             </span>
                         </td>
-                        <td>{{ libro.fechaCreacion }}</td>                        
-                        <td>{{ libro.fechaActualizacion }}</td>                        
+                        <td>{{ libro.fechaCreacion }}</td>
+                        <td>{{ libro.fechaActualizacion }}</td>
                         <td>
                             <app-btn-editar (clickEvent)="openModal(libro)"></app-btn-editar>
-                            <app-btn-eliminar (clickEvent)="deleteBooks(libro.id)"></app-btn-eliminar>
+                            <app-btn-eliminar (clickEvent)="eliminarLibro(libro.id)"></app-btn-eliminar>
                         </td>
                     </tr>
-
                 </tbody>
             </table>
         </ng-container>
@@ -90,6 +87,7 @@
 
 </app-form-modal>
 
-<app-confirm-modal *ngIf="showConfirm" [title]="'Eliminar libro'" [message]="'¿Está seguro que desea eliminar este libro?'"
-  (confirmed)="onConfirmDelete(true)" (cancelled)="onConfirmDelete(false)">
+<app-confirm-modal *ngIf="showConfirm" [show]="showConfirm" [title]="'Eliminar libro'"
+    [message]="'¿Está seguro que desea eliminar este libro?'" (confirmed)="onConfirmDelete(true)"
+    (cancelled)="onConfirmDelete(false)">
 </app-confirm-modal>

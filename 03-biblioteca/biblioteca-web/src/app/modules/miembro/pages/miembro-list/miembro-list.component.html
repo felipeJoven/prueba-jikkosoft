@@ -36,7 +36,6 @@
     <div class="table-container">
         <ng-container *ngIf="!isLoading && miembros.length > 0 && !errorMessage; else errorBlock">
             <table>
-
                 <thead>
                     <tr *ngIf="miembrosPaginados">
                         <th>Biblioteca</th>
@@ -52,7 +51,6 @@
                 </thead>
 
                 <tbody>
-
                     <tr *ngFor="let miembro of miembrosPaginados">
                         <td>{{ miembro.nombreBiblioteca }}</td>
                         <td>{{ miembro.nombre }}</td>
@@ -71,7 +69,6 @@
                             <app-btn-eliminar (clickEvent)="eliminarMiembro(miembro.id)"></app-btn-eliminar>
                         </td>
                     </tr>
-
                 </tbody>
             </table>
         </ng-container>
@@ -90,13 +87,12 @@
 <app-form-modal *ngIf="showModal" [show]="showModal"
     [title]="miembroSeleccionado ? 'Editar miembro' : 'Agregar miembro'" (closed)="closeModal()">
 
-    <app-miembro-form [miembro]="miembroSeleccionado" (guardado)="onSave()"
-        (cancelar)="closeModal()">
+    <app-miembro-form [miembro]="miembroSeleccionado" (guardado)="onSave()" (cancelar)="closeModal()">
     </app-miembro-form>
 
 </app-form-modal>
 
-<app-confirm-modal *ngIf="showConfirm" [title]="'Eliminar miembro'"
+<app-confirm-modal *ngIf="showConfirm" [show]="showConfirm" [title]="'Eliminar miembro'"
     [message]="'¿Está seguro que desea eliminar este miembro?'" (confirmed)="onConfirmDelete(true)"
     (cancelled)="onConfirmDelete(false)">
 </app-confirm-modal>

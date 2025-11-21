@@ -26,10 +26,10 @@ export class UsuarioListComponent implements OnInit {
   constructor(private usuarioService: UsuarioService) { }
 
   ngOnInit(): void {
-    this.loadBooks();
+    this.cargarUsuarios();
   }
 
-  loadBooks(): void {
+  cargarUsuarios(): void {
     this.isLoading = true;
 
     this.usuarioService.obtenerUsuarios().subscribe({
@@ -45,16 +45,15 @@ export class UsuarioListComponent implements OnInit {
         this.isLoading = false;
       }
     });
-
   }
 
   onPageChange(data: any[]) {
     this.usuariosPaginados = data;
   }
 
-  clearSearch(): void {
+  limpiarBusqueda(): void {
     this.searchControl.reset('');
-    this.loadBooks();
+    this.cargarUsuarios();
   }
 
   openModal(usuario?: Usuario): void {
@@ -69,10 +68,10 @@ export class UsuarioListComponent implements OnInit {
 
   onSave(): void {
     this.closeModal();
-    this.loadBooks();
+    this.cargarUsuarios();
   }
 
-  deleteBooks(id: number): void {
+  eliminarUsuario(id: number): void {
     this.usuarioEliminar = id;
     this.showConfirm = true;
   }
@@ -81,7 +80,7 @@ export class UsuarioListComponent implements OnInit {
     this.showConfirm = false;
     if (confirmed && this.usuarioEliminar !== null) {
       this.usuarioService.eliminarUsuario(this.usuarioEliminar).subscribe({
-        next: () => this.loadBooks(),
+        next: () => this.cargarUsuarios(),
         error: (error) => console.log('Error eliminando la usuario ', error),
         complete: () => (this.usuarioEliminar = null)
       });

@@ -11,13 +11,13 @@
             class="d-flex flex-wrap align-items-center justify-content-center gap-2 flex-grow-1">
 
             <div class="flex-grow-1" style="min-width: 250px; max-width: 350px; margin-right: 20px;">
-                <app-filtro-busqueda [searchControl]="searchControl" (clear)="clearSearch()"
+                <app-filtro-busqueda [searchControl]="searchControl" (clear)="limpiarBusqueda()"
                     placeholder="Buscar categoria...">
                 </app-filtro-busqueda>
             </div>
 
             <div>
-                <app-btn-limpiar (click)="clearSearch()"></app-btn-limpiar>
+                <app-btn-limpiar (click)="limpiarBusqueda()"></app-btn-limpiar>
             </div>
 
             <div *ngIf="!errorMessage" class="d-flex justify-content-end" style="min-width: 180px;">
@@ -29,17 +29,16 @@
         </div>
     </div>
 
-    <div *ngIf="!isLoading && categorias.length === 0 && !errorMessage" class="alert alert-info text-center mx-auto mt-3"
-        style="width: 50%;"> No existen categorias registrados
+    <div *ngIf="!isLoading && categorias.length === 0 && !errorMessage"
+        class="alert alert-info text-center mx-auto mt-3" style="width: 50%;"> No existen categorias registrados
     </div>
 
     <div class="table-container">
         <ng-container *ngIf="!isLoading && categorias.length > 0 && !errorMessage; else errorBlock">
             <table>
-
                 <thead>
                     <tr *ngIf="categoriasPaginadas">
-                        <th>Nombre</th>                        
+                        <th>Nombre</th>
                         <th>Fecha de creación</th>
                         <th>Fecha de actualización</th>
                         <th>Acciones</th>
@@ -47,17 +46,15 @@
                 </thead>
 
                 <tbody>
-
                     <tr *ngFor="let categoria of categoriasPaginadas">
                         <td>{{ categoria.nombre }}</td>
-                        <td>{{ categoria.fechaCreacion }}</td>                        
-                        <td>{{ categoria.fechaActualizacion }}</td>                        
+                        <td>{{ categoria.fechaCreacion }}</td>
+                        <td>{{ categoria.fechaActualizacion }}</td>
                         <td>
                             <app-btn-editar (clickEvent)="openModal(categoria)"></app-btn-editar>
-                            <app-btn-eliminar (clickEvent)="deleteBooks(categoria.id)"></app-btn-eliminar>
+                            <app-btn-eliminar (clickEvent)="eliminarCategoria(categoria.id)"></app-btn-eliminar>
                         </td>
                     </tr>
-
                 </tbody>
             </table>
         </ng-container>
@@ -73,13 +70,15 @@
     <app-paginador [data]="categorias" (paginatedDataChange)="onPageChange($event)"></app-paginador>
 </div>
 
-<app-form-modal *ngIf="showModal" [show]="showModal" [title]="!categoriaSeleccionada ? 'Agregar categoria' : 'Editar categoria' "
-    (closed)="closeModal()">
+<app-form-modal *ngIf="showModal" [show]="showModal"
+    [title]="!categoriaSeleccionada ? 'Agregar categoria' : 'Editar categoria' " (closed)="closeModal()">
 
-    <app-categoria-form [categoria]="categoriaSeleccionada" (guardado)="onSave()" (cancelar)="closeModal()"></app-categoria-form>
+    <app-categoria-form [categoria]="categoriaSeleccionada" (guardado)="onSave()" (cancelar)="closeModal()">
+    </app-categoria-form>
 
 </app-form-modal>
 
-<app-confirm-modal *ngIf="showConfirm" [title]="'Eliminar categoria'" [message]="'¿Está seguro que desea eliminar esta categoria?'"
-  (confirmed)="onConfirmDelete(true)" (cancelled)="onConfirmDelete(false)">
+<app-confirm-modal *ngIf="showConfirm" [show]="showConfirm" [title]="'Eliminar categoria'"
+    [message]="'¿Está seguro que desea eliminar esta categoria?'" (confirmed)="onConfirmDelete(true)"
+    (cancelled)="onConfirmDelete(false)">
 </app-confirm-modal>

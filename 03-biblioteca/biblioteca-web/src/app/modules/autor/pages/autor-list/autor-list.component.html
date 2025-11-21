@@ -11,13 +11,13 @@
             class="d-flex flex-wrap align-items-center justify-content-center gap-2 flex-grow-1">
 
             <div class="flex-grow-1" style="min-width: 250px; max-width: 350px; margin-right: 20px;">
-                <app-filtro-busqueda [searchControl]="searchControl" (clear)="clearSearch()"
+                <app-filtro-busqueda [searchControl]="searchControl" (clear)="limpiarBusqueda()"
                     placeholder="Buscar autor...">
                 </app-filtro-busqueda>
             </div>
 
             <div>
-                <app-btn-limpiar (click)="clearSearch()"></app-btn-limpiar>
+                <app-btn-limpiar (click)="limpiarBusqueda()"></app-btn-limpiar>
             </div>
 
             <div *ngIf="!errorMessage" class="d-flex justify-content-end" style="min-width: 180px;">
@@ -36,7 +36,6 @@
     <div class="table-container">
         <ng-container *ngIf="!isLoading && autores.length > 0 && !errorMessage; else errorBlock">
             <table>
-
                 <thead>
                     <tr *ngIf="autoresPaginados">
                         <th>Nombre</th>
@@ -48,18 +47,16 @@
                 </thead>
 
                 <tbody>
-
                     <tr *ngFor="let autor of autoresPaginados">
                         <td>{{ autor.nombre }}</td>
                         <td>{{ autor.nacionalidad }}</td>
-                        <td>{{ autor.fechaCreacion }}</td>                        
-                        <td>{{ autor.fechaActualizacion }}</td>                        
+                        <td>{{ autor.fechaCreacion }}</td>
+                        <td>{{ autor.fechaActualizacion }}</td>
                         <td>
                             <app-btn-editar (clickEvent)="openModal(autor)"></app-btn-editar>
-                            <app-btn-eliminar (clickEvent)="deleteAuthors(autor.id)"></app-btn-eliminar>
+                            <app-btn-eliminar (clickEvent)="eliminarAutor(autor.id)"></app-btn-eliminar>
                         </td>
                     </tr>
-
                 </tbody>
             </table>
         </ng-container>
@@ -82,6 +79,7 @@
 
 </app-form-modal>
 
-<app-confirm-modal *ngIf="showConfirm" [title]="'Eliminar autor'" [message]="'¿Está seguro que desea eliminar este autor?'"
-  (confirmed)="onConfirmDelete(true)" (cancelled)="onConfirmDelete(false)">
+<app-confirm-modal *ngIf="showConfirm" [show]="showConfirm" [title]="'Eliminar autor'"
+    [message]="'¿Está seguro que desea eliminar este autor?'" (confirmed)="onConfirmDelete(true)"
+    (cancelled)="onConfirmDelete(false)">
 </app-confirm-modal>

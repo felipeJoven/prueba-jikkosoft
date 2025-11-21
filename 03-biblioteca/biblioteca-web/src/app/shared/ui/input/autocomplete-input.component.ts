@@ -1,9 +1,9 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-autocomplete-input',
   templateUrl: './autocomplete-input.component.html',
-  styleUrl: './autocomplete-input.component.css'
+  styleUrls: ['./autocomplete-input.component.css']
 })
 export class AutocompleteInputComponent implements OnChanges {
 
@@ -17,6 +17,8 @@ export class AutocompleteInputComponent implements OnChanges {
   filteredOptions: string[] = [];
   isDropdownOpen = false;
   readonly = false;
+
+  constructor(private elementRef: ElementRef) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['selectedOption']) {
@@ -58,5 +60,22 @@ export class AutocompleteInputComponent implements OnChanges {
     if (this.readonly) return;
     this.filteredOptions = [...this.options];
     this.isDropdownOpen = true;
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: Event) {
+    const target = event.target as HTMLElement;
+    const clickedInside = target.closest('.autocomplete-container');
+    
+    if (!clickedInside || clickedInside !== this.elementRef.nativeElement.querySelector('.autocomplete-container')) {
+      this.isDropdownOpen = false;
+    }
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeydown(event: KeyboardEvent) {
+    if (event.key === 'Escape' && this.isDropdownOpen) {
+      this.isDropdownOpen = false;
+    }
   }
 }

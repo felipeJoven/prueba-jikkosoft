@@ -14,7 +14,7 @@ export class CategoriaListComponent implements OnInit {
   categorias: Categoria[] = [];
   categoriasPaginadas: any[] = [];
   categoriaSeleccionada: Categoria | null = null;
-  categoriaEliminar: number | null = null;
+  categoriaIdEliminar: number | null = null;
 
   errorMessage = '';
   isLoading = true;
@@ -26,10 +26,10 @@ export class CategoriaListComponent implements OnInit {
   constructor(private categoriaService: CategoriaService) { }
 
   ngOnInit(): void {
-    this.loadCategories();
+    this.cargarCategorias();
   }
 
-  private loadCategories() {
+  private cargarCategorias() {
     this.isLoading = true;
 
     this.categoriaService.obtenerCategorias().subscribe({
@@ -51,9 +51,9 @@ export class CategoriaListComponent implements OnInit {
     this.categoriasPaginadas = data;
   }
 
-  clearSearch(): void {
+  limpiarBusqueda(): void {
     this.searchControl.reset('');
-    this.loadCategories();
+    this.cargarCategorias();
   }
 
   openModal(categoria?: Categoria): void {
@@ -68,24 +68,24 @@ export class CategoriaListComponent implements OnInit {
 
   onSave(): void {
     this.closeModal();
-    this.loadCategories();
+    this.cargarCategorias();
   }
 
-  deleteBooks(id: number): void {
-    this.categoriaEliminar = id;
+  eliminarCategoria(id: number): void {
+    this.categoriaIdEliminar = id;
     this.showConfirm = true;
   }
 
   onConfirmDelete(confirmed: boolean): void {
     this.showConfirm = false;
-    if (confirmed && this.categoriaEliminar !== null) {
-      this.categoriaService.eliminarCategoria(this.categoriaEliminar).subscribe({
-        next: () => this.loadCategories(),
+    if (confirmed && this.categoriaIdEliminar !== null) {
+      this.categoriaService.eliminarCategoria(this.categoriaIdEliminar).subscribe({
+        next: () => this.cargarCategorias(),
         error: (error) => console.log('Error eliminando el libro: ', error),
-        complete: () => (this.categoriaEliminar = null)
+        complete: () => (this.categoriaIdEliminar = null)
       });
     } else {
-      this.categoriaEliminar = null;
+      this.categoriaIdEliminar = null;
     }
   }
 }

@@ -14,11 +14,14 @@ import { AutorService } from '../../../autor/services/autor.service';
 export class LibroFormComponent implements OnInit, OnChanges {
 
   @Input() libro: Libro | null = null;
+  
   @Output() guardado = new EventEmitter<void>();
   @Output() cancelar = new EventEmitter<void>();
 
   libroForm: FormGroup;
   autores: Autor[] = [];
+  nombresAutores: string[] = [];
+  autorSeleccionado: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -33,37 +36,54 @@ export class LibroFormComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    this.loadAuthors();
+    this.cargarAutores();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['libro'] && this.libro) {
       this.libroForm.patchValue(this.libro);
+      this.sincronizarAutor();
     } else {
       this.libroForm.reset();
     }
   }
 
-  private loadAuthors(): void {
+  private cargarAutores(): void {
     this.autorService.obtenerAutores().subscribe({
       next: (data) => {
-        console.log("Respuesta del backend:", data);
         this.autores = data
+        this.nombresAutores = data.map(a => a.nombre);
+        this.sincronizarAutor();
       },
       error: (e) => console.log("Error cargando tipos de libro: ", e)
     });
   }
 
+  private sincronizarAutor(): void {
+    if (!this.libro || this.autores.length === 0) return;
+
+    const autor = this.autores.find(a => a.id === this.libro?.autorId);
+    this.autorSeleccionado = autor ? autor.nombre : '';
+  }
+
+  onSelectAutor(nombre: string) {
+    const autor = this.autores.find(a => a.nombre === nombre);
+
+    this.libroForm.patchValue({
+      autorId: autor ? autor.id : null
+    });
+  }
+
   onSubmit(): void {
-    if (this.libroForm.valid) {
-      const formValue = this.libroForm.value;
+    if (this.libroForm.invalid) return;
+    
+      const formData = this.libroForm.value;
       const id = this.libro?.id;
 
-      this.libroService.guardarLibro(formValue, id).subscribe({
+      this.libroService.guardarLibro(formData, id).subscribe({
         next: () => this.guardado.emit(),
         error: (e) => console.error("Error guardando libro: ", e)
       });
-    }
   }
 
   onCancel(): void {

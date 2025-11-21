@@ -16,6 +16,7 @@ import { RolService } from '../../services/rol.service';
 export class UsuarioFormComponent implements OnInit, OnChanges {
 
   @Input() usuario: Usuario | null = null;
+  
   @Output() guardado = new EventEmitter<void>();
   @Output() cancelar = new EventEmitter<void>();
   

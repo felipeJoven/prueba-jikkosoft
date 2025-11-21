@@ -17,12 +17,18 @@ import { MiembroService } from '../../../miembro/services/miembro.service';
 export class PrestamoFormComponent {
 
   @Input() prestamo: Prestamo | null = null;
+  
   @Output() guardado = new EventEmitter<void>();
   @Output() cancelar = new EventEmitter<void>();
 
   prestamoForm: FormGroup;
   libros: Libro[] = [];
   miembros: Miembro[] = [];
+  titulosLibros: string[] = [];
+  libroSeleccionado: string = '';
+  numerosIdMiembros: string[] = [];
+  miembroSeleccionado: string = '';
+  nombreMiembro: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -39,50 +45,87 @@ export class PrestamoFormComponent {
   }
 
   ngOnInit(): void {
-    this.loadBooks();
-    this.loadMembers();
+    this.cargarLibros();
+    this.cargarMiembros();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['prestamo'] && this.prestamo) {
       this.prestamoForm.patchValue(this.prestamo);
+      this.sincronizarLibro();
+      this.sincronizarMiembro();
     } else {
       this.prestamoForm.reset();
     }
   }
 
-  private loadBooks(): void {
+  private cargarLibros(): void {
     this.libroService.obtenerLibros().subscribe({
       next: (data) => {
-        console.log("Respuesta del backend:", data);
         this.libros = data
+        this.titulosLibros = data.map(l => l.titulo);
+        this.sincronizarLibro();
       },
       error: (e) => console.log("Error cargando tipos de prestamo: ", e)
 
     });
   }
 
-  private loadMembers(): void {
+  private cargarMiembros(): void {
     this.miembroService.obtenerMiembros().subscribe({
       next: (data) => {
-        console.log("Respuesta del backend:", data);
         this.miembros = data
+        this.numerosIdMiembros = data.map(m => m.numeroIdentificacion);
+        this.sincronizarMiembro();
       },
       error: (e) => console.log("Error cargando tipos de prestamo: ", e)
 
     });
+  }
+
+  private sincronizarLibro(): void {
+    if (!this.prestamo || this.libros.length === 0) return;
+
+    const biblioteca = this.libros.find(b => b.id === this.prestamo?.libroId);
+    this.libroSeleccionado = biblioteca ? biblioteca.titulo : '';
+  }
+
+  private sincronizarMiembro(): void {
+    if (!this.prestamo || this.miembros.length === 0) return;
+
+    const biblioteca = this.miembros.find(b => b.id === this.prestamo?.miembroId);
+    this.miembroSeleccionado = biblioteca ? biblioteca.numeroIdentificacion : '';
+  }
+
+  onSelectLibro(titulo: string) {
+    const libro = this.libros.find(l => l.titulo === titulo);
+
+    this.prestamoForm.patchValue({
+      libroId: libro ? libro.id : null
+    });
+
+  }
+
+  onSelectMiembro(numeroId: string) {
+    const miembro = this.miembros.find(m => m.numeroIdentificacion === numeroId);
+
+    this.prestamoForm.patchValue({
+      miembroId: miembro ? miembro.id : null
+    });
+
+    this.nombreMiembro = miembro ? miembro.nombre + " " + miembro.apellido : '';
   }
 
   onSubmit(): void {
-    if (this.prestamoForm.valid) {
-      const formValue = this.prestamoForm.value;
+    if (this.prestamoForm.invalid) return;
+
+      const formData = this.prestamoForm.value;
       const id = this.prestamo?.id;
 
-      this.prestamoService.guardarPrestamo(formValue, id).subscribe({
+      this.prestamoService.guardarPrestamo(formData, id).subscribe({
         next: () => this.guardado.emit(),
         error: (e) => console.error("Error guardando prestamo: ", e)
-      });
-    }
+      });    
   }
 
   onCancel(): void {

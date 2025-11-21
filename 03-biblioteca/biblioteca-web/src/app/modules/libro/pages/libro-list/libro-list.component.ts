@@ -14,7 +14,7 @@ export class LibroListComponent implements OnInit {
   libros: Libro[] = [];
   librosPaginados: any[] = [];
   libroSeleccionado: Libro | null = null;
-  libroEliminar: number | null = null;
+  libroIdEliminar: number | null = null;
 
   errorMessage = '';
   isLoading = true;
@@ -26,10 +26,10 @@ export class LibroListComponent implements OnInit {
   constructor(private libroService: LibroService) { }
 
   ngOnInit(): void {
-    this.loadBooks();
+    this.cargarLibros();
   }
 
-  loadBooks(): void {
+  cargarLibros(): void {
     this.isLoading = true;
     
     this.libroService.obtenerLibros().subscribe({
@@ -51,9 +51,9 @@ export class LibroListComponent implements OnInit {
     this.librosPaginados = data;
   }
 
-  clearSearch(): void {
+  limpiarBusqueda(): void {
     this.searchControl.reset('');
-    this.loadBooks();
+    this.cargarLibros();
   }
 
   openModal(libro?: Libro): void {
@@ -68,25 +68,25 @@ export class LibroListComponent implements OnInit {
 
   onSave(): void {
     this.closeModal();
-    this.loadBooks();
+    this.cargarLibros();
   }
 
-  deleteBooks(id: number): void {
-    this.libroEliminar = id;
+  eliminarLibro(id: number): void {
+    this.libroIdEliminar = id;
     this.showConfirm = true;
   }
 
   onConfirmDelete(confirmed: boolean): void {    
     this.showConfirm = false;
     
-    if (confirmed && this.libroEliminar !== null) {
-      this.libroService.eliminarLibro(this.libroEliminar).subscribe({
-        next: () => this.loadBooks(),
+    if (confirmed && this.libroIdEliminar !== null) {
+      this.libroService.eliminarLibro(this.libroIdEliminar).subscribe({
+        next: () => this.cargarLibros(),
         error: (error) => console.log('Error eliminando el libro: ', error),
-        complete: () => (this.libroEliminar = null)
+        complete: () => (this.libroIdEliminar = null)
       });
     } else {
-      this.libroEliminar = null;
+      this.libroIdEliminar = null;
     }
   }
 }

@@ -16,10 +16,10 @@
         <div class="row mb-3 align-items-center">
             <label for="nombreAutor" class="col-sm-3 col-form-label">Autor</label>
             <div class="col-sm-6">
-                <select id="nombreAutor" formControlName="autorId" class="form-select form-select-sm">
-                    <option [ngValue]="null" disabled>Seleccione --</option>
-                    <option *ngFor="let autor of autores" [ngValue]="autor.id">{{ autor.nombre }}</option>
-                </select>
+                <app-autocomplete-input [id]="'nombreAutor'" [options]="nombresAutores"
+                    [placeholder]="'Buscar autor...'" [selectedOption]="autorSeleccionado"
+                    (selectionChange)="onSelectAutor($event)">
+                </app-autocomplete-input>
                 <div *ngIf="libroForm.get('autorId')?.invalid && libroForm.get('autorId')?.touched"
                     class="text-danger mt-1 small">
                     El autor es obligatorio

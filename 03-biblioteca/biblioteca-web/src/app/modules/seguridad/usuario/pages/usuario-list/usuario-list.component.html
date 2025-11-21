@@ -11,13 +11,13 @@
             class="d-flex flex-wrap align-items-center justify-content-center gap-2 flex-grow-1">
 
             <div class="flex-grow-1" style="min-width: 250px; max-width: 350px; margin-right: 20px;">
-                <app-filtro-busqueda [searchControl]="searchControl" (clear)="clearSearch()"
+                <app-filtro-busqueda [searchControl]="searchControl" (clear)="limpiarBusqueda()"
                     placeholder="Buscar usuario...">
                 </app-filtro-busqueda>
             </div>
 
             <div>
-                <app-btn-limpiar (click)="clearSearch()"></app-btn-limpiar>
+                <app-btn-limpiar (click)="limpiarBusqueda()"></app-btn-limpiar>
             </div>
 
             <div *ngIf="!errorMessage" class="d-flex justify-content-end" style="min-width: 180px;">
@@ -36,7 +36,6 @@
     <div class="table-container">
         <ng-container *ngIf="!isLoading && usuarios.length > 0 && !errorMessage; else errorBlock">
             <table>
-
                 <thead>
                     <tr *ngIf="usuariosPaginados">
                         <th>Nombre</th>
@@ -49,7 +48,6 @@
                 </thead>
 
                 <tbody>
-
                     <tr *ngFor="let usuario of usuariosPaginados">
                         <td>{{ usuario.nombre }}</td>
                         <td>{{ usuario.apellido }}</td>
@@ -58,10 +56,9 @@
                         <td>{{ usuario.rol }}</td>
                         <td>
                             <app-btn-editar (clickEvent)="openModal(usuario)"></app-btn-editar>
-                            <app-btn-eliminar (clickEvent)="deleteBooks(usuario.id)"></app-btn-eliminar>
+                            <app-btn-eliminar (clickEvent)="eliminarUsuario(usuario.id)"></app-btn-eliminar>
                         </td>
                     </tr>
-
                 </tbody>
             </table>
         </ng-container>
@@ -84,6 +81,6 @@
 
 </app-form-modal>
 
-<app-confirm-modal *ngIf="showConfirm" [title]="'Eliminar usuario'" [message]="'¿Está seguro que desea eliminar este usuario?'"
+<app-confirm-modal *ngIf="showConfirm" [show]="showConfirm" [title]="'Eliminar usuario'" [message]="'¿Está seguro que desea eliminar este usuario?'"
     (confirmed)="onConfirmDelete(true)" (cancelled)="onConfirmDelete(false)">
 </app-confirm-modal>

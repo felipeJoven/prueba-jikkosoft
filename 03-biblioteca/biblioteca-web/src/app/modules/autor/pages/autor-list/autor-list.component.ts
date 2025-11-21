@@ -14,7 +14,7 @@ export class AutorListComponent implements OnInit {
   autores: Autor[] = [];
   autoresPaginados: any[] = [];
   autorSeleccionado: Autor | null = null;
-  autorEliminar: number | null = null;
+  autorIdEliminar: number | null = null;
 
   errorMessage = '';
   isLoading = true;
@@ -26,10 +26,10 @@ export class AutorListComponent implements OnInit {
   constructor(private autorService: AutorService) { }
 
   ngOnInit(): void {
-    this.loadAuthors();
+    this.cargarAutores();
   }
 
-  loadAuthors(): void {
+  cargarAutores(): void {
     this.isLoading = true;
 
     this.autorService.obtenerAutores().subscribe({
@@ -45,16 +45,15 @@ export class AutorListComponent implements OnInit {
         this.isLoading = false;
       }
     });
-
   }
 
   onPageChange(data: any[]) {
     this.autoresPaginados = data;
   }
 
-  clearSearch(): void {
+  limpiarBusqueda(): void {
     this.searchControl.reset('');
-    this.loadAuthors();
+    this.cargarAutores();
   }
 
   openModal(autor?: Autor): void {
@@ -69,24 +68,24 @@ export class AutorListComponent implements OnInit {
 
   onSave(): void {
     this.closeModal();
-    this.loadAuthors();
+    this.cargarAutores();
   }
 
-  deleteAuthors(id: number): void {
-    this.autorEliminar = id;
+  eliminarAutor(id: number): void {
+    this.autorIdEliminar = id;
     this.showConfirm = true;
   }
 
   onConfirmDelete(confirmed: boolean): void {
     this.showConfirm = false;
-    if (confirmed && this.autorEliminar !== null) {
-      this.autorService.eliminarAutor(this.autorEliminar).subscribe({
-        next: () => this.loadAuthors(),
+    if (confirmed && this.autorIdEliminar !== null) {
+      this.autorService.eliminarAutor(this.autorIdEliminar).subscribe({
+        next: () => this.cargarAutores(),
         error: (error) => console.log('Error eliminando la autor: ', error),
-        complete: () => (this.autorEliminar = null)
+        complete: () => (this.autorIdEliminar = null)
       });
     } else {
-      this.autorEliminar = null;
+      this.autorIdEliminar = null;
     }
   }
 }

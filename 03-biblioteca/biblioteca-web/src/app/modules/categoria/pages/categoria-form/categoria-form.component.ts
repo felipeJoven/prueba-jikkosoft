@@ -12,15 +12,13 @@ import { CategoriaService } from '../../service/categoria.service';
 export class CategoriaFormComponent implements OnChanges {
 
   @Input() categoria: Categoria | null = null;
+
   @Output() guardado = new EventEmitter<void>();
   @Output() cancelar = new EventEmitter<void>();
 
   categoriaForm: FormGroup;
 
-  constructor(
-    private fb: FormBuilder,
-    private categoriaService: CategoriaService
-  ) {
+  constructor(private fb: FormBuilder, private categoriaService: CategoriaService) {
     this.categoriaForm = this.fb.group({
       nombre: ['', Validators.required]
     });

@@ -13,12 +13,12 @@ import { BibliotecaService } from '../../../biblioteca/services/biblioteca.servi
 @Component({
   selector: 'app-miembro-form',
   templateUrl: './miembro-form.component.html',
-  styleUrl: './miembro-form.component.css'
+  styleUrls: ['./miembro-form.component.css']
 })
 export class MiembroFormComponent implements OnInit, OnChanges {
 
   @Input() miembro: Miembro | null = null;
-  
+
   @Output() guardado = new EventEmitter<void>();
   @Output() cancelar = new EventEmitter<void>();
 
@@ -53,9 +53,7 @@ export class MiembroFormComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['miembro'] && this.miembro) {
       this.miembroForm.patchValue(this.miembro);
-      if (this.bibliotecas.length > 0) {
-        this.sincronizarBiblioteca();
-      }
+      this.sincronizarBiblioteca();
     } else {
       this.miembroForm.reset();
     }
@@ -75,43 +73,38 @@ export class MiembroFormComponent implements OnInit, OnChanges {
       next: (data) => {
         this.bibliotecas = data;
         this.nombresBibliotecas = data.map(b => b.nombre);
-
-
         this.sincronizarBiblioteca();
-
       },
       error: (e) => console.error("Error cargando bibliotecas: ", e)
     });
   }
 
   private sincronizarBiblioteca(): void {
-    if (!this.miembro) return;
+    if (!this.miembro || this.bibliotecas.length === 0) return;
 
     const biblioteca = this.bibliotecas.find(b => b.id === this.miembro?.bibliotecaId);
-
     this.bibliotecaSeleccionada = biblioteca ? biblioteca.nombre : '';
   }
 
   onSelectBiblioteca(nombre: string) {
     const biblioteca = this.bibliotecas.find(b => b.nombre === nombre);
 
-    if (biblioteca) {
-      this.miembroForm.patchValue({ bibliotecaId: biblioteca.id });
-    } else {
-      this.miembroForm.patchValue({ bibliotecaId: null });
-    }
+    this.miembroForm.patchValue({
+      bibliotecaId: biblioteca ? biblioteca.id : null
+    });
+
   }
 
   onSubmit(): void {
-    if (this.miembroForm.valid) {
-      const formValue = this.miembroForm.value;
-      const id = this.miembro?.id;
+    if (this.miembroForm.invalid) return;
 
-      this.miembroService.guardarMiembro(formValue, id).subscribe({
-        next: () => this.guardado.emit(),
-        error: (e) => console.error("Error guardando miembro: ", e)
-      });
-    }
+    const formData = this.miembroForm.value;
+    const id = this.miembro?.id;
+
+    this.miembroService.guardarMiembro(formData, id).subscribe({
+      next: () => this.guardado.emit(),
+      error: (e) => console.error("Error guardando miembro: ", e)
+    });
   }
 
   onCancel(): void {
