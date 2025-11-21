@@ -6,6 +6,7 @@ import lombok.Data;
 public class UsuarioRequestDto {
 
     private String nombre;
+    private String apellido;
     private String usuario;
     private String correo;
     private String clave;

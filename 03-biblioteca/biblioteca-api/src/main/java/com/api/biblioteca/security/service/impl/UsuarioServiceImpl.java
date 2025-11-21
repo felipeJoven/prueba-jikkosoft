@@ -72,6 +72,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         usuario.setId(null);
         usuario.setNombre(usuarioNuevo.getNombre());
+        usuario.setApellido(usuarioNuevo.getApellido());
         usuario.setUsuario(usuarioNuevo.getUsuario());
         usuario.setCorreo(usuarioNuevo.getCorreo());
         usuario.setClave(passwordEncoder.encode(usuarioNuevo.getClave()));

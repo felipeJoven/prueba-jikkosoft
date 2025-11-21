@@ -63,12 +63,12 @@ public class AutorServiceImpl implements AutorService {
 
     @Override
     @Transactional
-    public Autor actualizarAutor(Integer id, Autor autorActual) {
+    public Autor actualizarAutor(Integer id, Autor autorNuevo) {
 
-        Autor autorNuevo = autorRepository.findById(id)
+        Autor autorActual = autorRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(MessageUtils.ID_NO_ENCONTRADO + id));
 
-        boolean existeAutor = autorRepository.existsByNombre(autorActual.getNombre());
+        boolean existeAutor = autorRepository.existsByNombre(autorNuevo.getNombre());
         boolean cambioNombre = !autorNuevo.getNombre().equalsIgnoreCase(autorActual.getNombre());
 
         if (cambioNombre && existeAutor) {
@@ -76,6 +76,7 @@ public class AutorServiceImpl implements AutorService {
         }
 
         autorActual.setNombre(autorNuevo.getNombre());
+        autorActual.setNacionalidad(autorNuevo.getNacionalidad());
         autorActual.setFechaActualizacion(LocalDate.now());
 
         return autorRepository.save(autorActual);

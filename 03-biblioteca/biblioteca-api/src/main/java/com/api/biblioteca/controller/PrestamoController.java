@@ -3,7 +3,6 @@ package com.api.biblioteca.controller;
 import com.api.biblioteca.dto.PrestamoRequestDto;
 import com.api.biblioteca.dto.PrestamoResponseDto;
 import com.api.biblioteca.dto.PrestamoDto;
-import com.api.biblioteca.model.Prestamo;
 import com.api.biblioteca.service.PrestamoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,7 +21,7 @@ public class PrestamoController {
     private final PrestamoService prestamoService;
 
     @GetMapping("")
-    public ResponseEntity<?> obtenerPrestamos() {
+    public ResponseEntity<List<PrestamoDto>> obtenerPrestamos() {
 
         List<PrestamoDto> prestamos = prestamoService.listarPrestamos();
 
@@ -30,9 +29,9 @@ public class PrestamoController {
     }
 
     @GetMapping("/{id}")
-    private ResponseEntity<?> obtenerPrestamoPorId(@PathVariable Integer id) {
+    private ResponseEntity<Optional<PrestamoDto>> obtenerPrestamoPorId(@PathVariable Integer id) {
 
-        Optional<Prestamo> prestamo = prestamoService.listarPrestamoPorId(id);
+        Optional<PrestamoDto> prestamo = prestamoService.listarPrestamoPorId(id);
 
         return ResponseEntity.ok(prestamo);
     }

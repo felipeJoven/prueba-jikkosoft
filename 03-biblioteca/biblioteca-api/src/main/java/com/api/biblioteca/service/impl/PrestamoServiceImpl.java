@@ -47,7 +47,7 @@ public class PrestamoServiceImpl implements PrestamoService {
     }
 
     @Override
-    public Optional<Prestamo> listarPrestamoPorId(Integer id) {
+    public Optional<PrestamoDto> listarPrestamoPorId(Integer id) {
 
         Optional<Prestamo> prestamoId = prestamoRepository.findById(id);
 
@@ -55,20 +55,20 @@ public class PrestamoServiceImpl implements PrestamoService {
             throw new NotFoundException(MessageUtils.ID_NO_ENCONTRADO + id);
         }
 
-        return prestamoId;
+        return prestamoId.map(prestamo -> modelMapper.map(prestamo, PrestamoDto.class));
     }
 
     @Override
     @Transactional
     public PrestamoResponseDto guardarPrestamo(PrestamoRequestDto prestamoNuevo) {
 
-        Libro libroNuevo = libroRepository.findById(prestamoNuevo.getLibroId())
+        Libro libro = libroRepository.findById(prestamoNuevo.getLibroId())
                 .orElseThrow(() -> new NotFoundException(MessageUtils.ENTIDAD_NO_ENCONTRADA, "el libro"));
 
-        Miembro miembroNuevo = miembroRepository.findById(prestamoNuevo.getMiembroId())
+        Miembro miembro = miembroRepository.findById(prestamoNuevo.getMiembroId())
                 .orElseThrow(() -> new NotFoundException(MessageUtils.ENTIDAD_NO_ENCONTRADA, "el miembro"));
 
-        boolean existePrestamo = prestamoRepository.existsByLibroAndDevuelto(libroNuevo, false);
+        boolean existePrestamo = prestamoRepository.existsByLibroAndDevuelto(libro, false);
 
         if (existePrestamo) {
             throw new ConflictException(MessageUtils.YA_EXISTE, "el prestamo");
@@ -79,23 +79,60 @@ public class PrestamoServiceImpl implements PrestamoService {
         prestamo.setId(null);
         prestamo.setFechaPrestamo(LocalDate.now());
         prestamo.setFechaDevolucion(prestamoNuevo.getFechaDevolucion());
-        prestamo.setLibro(libroNuevo);
-        prestamo.setMiembro(miembroNuevo);
+        prestamo.setLibro(libro);
+        prestamo.setMiembro(miembro);
         prestamo.setFechaCreacion(LocalDate.now());
         prestamo.setFechaActualizacion(LocalDate.now());
 
         Prestamo prestamoGuardado = prestamoRepository.save(prestamo);
 
         PrestamoResponseDto responseDto = modelMapper.map(prestamoGuardado, PrestamoResponseDto.class);
-        responseDto.setLibroId(libroNuevo.getId());
-        responseDto.setLibro(libroNuevo.getTitulo());
-        responseDto.setMiembroId(miembroNuevo.getId());
-        responseDto.setMiembro(miembroNuevo.getNombre());
+        responseDto.setLibroId(libro.getId());
+        responseDto.setLibro(libro.getTitulo());
+        responseDto.setMiembroId(miembro.getId());
+        responseDto.setMiembro(miembro.getNombre());
 
         return responseDto;
     }
 
+    @Override
+    @Transactional
+    public PrestamoResponseDto actualizarPrestamo(Integer id, PrestamoRequestDto prestamoNuevo) {
 
+        Prestamo prestamoActual = prestamoRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(MessageUtils.ID_NO_ENCONTRADO + id));
+
+        Libro libro = libroRepository.findById(prestamoNuevo.getLibroId())
+                .orElseThrow(() -> new NotFoundException(MessageUtils.ENTIDAD_NO_ENCONTRADA, "el libro"));
+
+        Miembro miembro = miembroRepository.findById(prestamoNuevo.getMiembroId())
+                .orElseThrow(() -> new NotFoundException(MessageUtils.ENTIDAD_NO_ENCONTRADA, "el miembro"));
+
+        if (!prestamoActual.getLibro().getId().equals(libro.getId())) {
+            boolean libroPrestado = prestamoRepository.existsByLibroAndDevuelto(libro, false);
+            if (libroPrestado) {
+                throw new ConflictException("El libro nuevo ya está prestado y no ha sido devuelto.");
+            }
+        }
+
+        prestamoActual.setFechaDevolucion(prestamoNuevo.getFechaDevolucion());
+        prestamoActual.setLibro(libro);
+        prestamoActual.setMiembro(miembro);
+        prestamoActual.setDevuelto(prestamoNuevo.isDevuelto());
+        prestamoActual.setFechaActualizacion(LocalDate.now());
+
+        Prestamo prestamoActualizado = prestamoRepository.save(prestamoActual);
+
+        PrestamoResponseDto responseDto = modelMapper.map(prestamoActualizado, PrestamoResponseDto.class);
+        responseDto.setLibroId(libro.getId());
+        responseDto.setLibro(libro.getTitulo());
+        responseDto.setMiembroId(miembro.getId());
+        responseDto.setMiembro(miembro.getNombre());
+
+        return responseDto;
+    }
+
+    @Override
     @Transactional
     public PrestamoResponseDto devolverPrestamo(Integer id) {
 
@@ -108,43 +145,6 @@ public class PrestamoServiceImpl implements PrestamoService {
         Prestamo guardado = prestamoRepository.save(prestamo);
 
         return modelMapper.map(guardado, PrestamoResponseDto.class);
-    }
-
-    @Override
-    @Transactional
-    public PrestamoResponseDto actualizarPrestamo(Integer id, PrestamoRequestDto prestamoNuevo) {
-
-        Prestamo prestamoActual = prestamoRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(MessageUtils.ID_NO_ENCONTRADO + id));
-
-        Libro libroNuevo = libroRepository.findById(prestamoNuevo.getLibroId())
-                .orElseThrow(() -> new NotFoundException(MessageUtils.ENTIDAD_NO_ENCONTRADA, "el libro"));
-
-        Miembro miembroNuevo = miembroRepository.findById(prestamoNuevo.getMiembroId())
-                .orElseThrow(() -> new NotFoundException(MessageUtils.ENTIDAD_NO_ENCONTRADA, "el miembro"));
-
-        if (!prestamoActual.getLibro().getId().equals(libroNuevo.getId())) {
-            boolean libroPrestado = prestamoRepository.existsByLibroAndDevuelto(libroNuevo, false);
-            if (libroPrestado) {
-                throw new ConflictException("El libro nuevo ya está prestado y no ha sido devuelto.");
-            }
-        }
-
-        prestamoActual.setFechaDevolucion(prestamoNuevo.getFechaDevolucion());
-        prestamoActual.setLibro(libroNuevo);
-        prestamoActual.setMiembro(miembroNuevo);
-        prestamoActual.setDevuelto(prestamoNuevo.isDevuelto());
-        prestamoActual.setFechaActualizacion(LocalDate.now());
-
-        Prestamo prestamoActualizado = prestamoRepository.save(prestamoActual);
-
-        PrestamoResponseDto responseDto = modelMapper.map(prestamoActualizado, PrestamoResponseDto.class);
-        responseDto.setLibroId(libroNuevo.getId());
-        responseDto.setLibro(libroNuevo.getTitulo());
-        responseDto.setMiembroId(miembroNuevo.getId());
-        responseDto.setMiembro(miembroNuevo.getNombre());
-
-        return responseDto;
     }
 
     @Override

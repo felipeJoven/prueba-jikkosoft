@@ -76,6 +76,8 @@ public class BibliotecaServiceImpl implements BibliotecaService {
         }
 
         bibliotecaActual.setDireccion(bibliotecaNueva.getDireccion());
+        bibliotecaActual.setBarrio(bibliotecaNueva.getBarrio());
+        bibliotecaActual.setTelefono(bibliotecaNueva.getTelefono());
         bibliotecaActual.setFechaActualizacion(LocalDate.now());
 
         return bibliotecaRepository.save(bibliotecaActual);

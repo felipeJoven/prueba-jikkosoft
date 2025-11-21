@@ -6,6 +6,7 @@ import lombok.Data;
 public class RegistroDto {
 
     String nombre;
+    String apellido;
     String usuario;
     String correo;
     String clave;

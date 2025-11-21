@@ -7,6 +7,7 @@ public class UsuarioResponseDto {
 
     private Integer id;
     private String nombre;
+    private String apellido;
     private String usuario;
     private String correo;
     private Integer rolId;

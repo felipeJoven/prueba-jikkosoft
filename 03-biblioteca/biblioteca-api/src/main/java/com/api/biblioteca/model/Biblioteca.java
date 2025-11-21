@@ -21,5 +21,8 @@ public class Biblioteca extends Base {
     private String direccion;
 
     @Column(nullable = false)
+    private String barrio;
+
+    @Column(nullable = false)
     private String telefono;
 }

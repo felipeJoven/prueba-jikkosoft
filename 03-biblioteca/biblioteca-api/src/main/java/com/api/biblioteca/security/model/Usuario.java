@@ -25,8 +25,11 @@ import java.util.List;
 @Builder
 public class Usuario extends Base implements UserDetails {
 
-    @Column(name = "nombre_completo", nullable = false)
+    @Column(nullable = false)
     private String nombre;
+
+    @Column(nullable = false)
+    private String apellido;
 
     @Column(name = "nombre_usuario", unique = true, nullable = false)
     private String usuario;
